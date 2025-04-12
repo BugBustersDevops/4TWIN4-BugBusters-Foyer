@@ -75,11 +75,17 @@
 				<version>0.8.7</version>
 				<executions>
 					<execution>
+						<id>prepare-agent</id>
 						<goals>
-							<goal>prepare-agent</goal>  <!-- Prepare JaCoCo agent to gather coverage during tests -->
-							<goal>report</goal>         <!-- Generate code coverage report -->
+							<goal>prepare-agent</goal>
 						</goals>
-						<phase>test</phase>  <!-- Bind it to the test phase -->
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
