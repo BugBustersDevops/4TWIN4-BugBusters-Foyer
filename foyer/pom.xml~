@@ -69,20 +69,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.7</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>  <!-- Prepare JaCoCo agent to gather coverage during tests -->
-							<goal>report</goal>         <!-- Generate code coverage report -->
-						</goals>
-						<phase>test</phase>  <!-- Bind it to the test phase -->
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
