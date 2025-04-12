@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReservationRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">foyer</a> &gt; <a href="index.source.html" class="el_package">tn.esprit.foyer.controllers</a> &gt; <span class="el_source">ReservationRestController.java</span></div><h1>ReservationRestController.java</h1><pre class="source lang-java linenums">package tn.esprit.foyer.controllers;
+
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import tn.esprit.foyer.entities.Reservation;
+import tn.esprit.foyer.services.IReservationService;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
+<span class="nc" id="L12">@AllArgsConstructor</span>
+@RequestMapping(&quot;/reservation&quot;)
+public class ReservationRestController {
+    IReservationService reservationService;
+    // http://localhost:8089/foyer/reservation/retrieve-all-reservations
+    @GetMapping(&quot;/retrieve-all-reservations&quot;)
+    @ResponseBody
+    public List&lt;Reservation&gt; getReservations() {
+<span class="nc" id="L20">        List&lt;Reservation&gt; listReservations = reservationService.retrieveAllReservations();</span>
+<span class="nc" id="L21">        return listReservations;</span>
+    }
+
+    // http://localhost:8089/foyer/reservation/retrieve-reservation/8
+    @GetMapping(&quot;/retrieve-reservation/{reservationId}&quot;)
+    @ResponseBody
+    public Reservation retrieveReservation(@PathVariable(&quot;reservationId&quot;) String reservationId) {
+<span class="nc" id="L28">        return reservationService.retrieveReservation(reservationId);</span>
+    }
+
+    // http://localhost:8089/foyer/reservation/add-reservation
+    @PostMapping(&quot;/add-reservation&quot;)
+    @ResponseBody
+    public Reservation addReservation(@RequestBody Reservation r) {
+<span class="nc" id="L35">        Reservation reservation= reservationService.addReservation(r);</span>
+<span class="nc" id="L36">        return reservation;</span>
+    }
+
+    // http://localhost:8089/foyer/reservation/update-reservation
+    @PutMapping(&quot;/update-reservation&quot;)
+    @ResponseBody
+    public Reservation updateReservation(@RequestBody Reservation r) {
+<span class="nc" id="L43">        Reservation reservation= reservationService.updateReservation(r);</span>
+<span class="nc" id="L44">        return reservation;</span>
+    }
+    // http://localhost:8089/foyer/reservation/removeReservation
+    @DeleteMapping(&quot;/removeReservation/{idReservation}&quot;)
+    @ResponseBody
+    public void removeReservation(@PathVariable(&quot;idReservation&quot;) String idReservation) {
+<span class="nc" id="L50">        reservationService.removeReservation(idReservation);</span>
+<span class="nc" id="L51">    }</span>
+
+         // http://localhost:8089/foyer/reservation/ajouterReservationEtAssignerAChambreEtAEtudiant/15/8453621
+         @PostMapping(&quot;/ajouterReservationEtAssignerAChambreEtAEtudiant/{numChambre}/{cin}&quot;)
+         @ResponseBody
+         public Reservation ajouterReservationEtAssignerAChambreEtAEtudiant(@RequestBody Reservation r,@PathVariable(&quot;numChambre&quot;) Long numChambre,@PathVariable(&quot;cin&quot;) long cin) {
+<span class="nc" id="L57">             Reservation reservation= reservationService.ajouterReservationEtAssignerAChambreEtAEtudiant(r,numChambre,cin);</span>
+<span class="nc" id="L58">             return reservation;</span>
+         }
+    // http://localhost:8089/foyer/reservation/getReservationParAnneeUniversitaire/2021-01-01/2021-12-31
+    @GetMapping(&quot;/getReservationParAnneeUniversitaire/{dateDebut}/{dateFin}&quot;)
+    @ResponseBody
+    public List&lt;Reservation&gt; getReservationParAnneeUniversitaire(@PathVariable(&quot;dateDebut&quot;) LocalDate dateDebut,@PathVariable(&quot;dateFin&quot;) LocalDate dateFin) {
+<span class="nc" id="L64">        return reservationService.getReservationParAnneeUniversitaire(dateDebut,dateFin);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

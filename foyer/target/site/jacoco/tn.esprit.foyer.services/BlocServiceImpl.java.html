@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlocServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">foyer</a> &gt; <a href="index.source.html" class="el_package">tn.esprit.foyer.services</a> &gt; <span class="el_source">BlocServiceImpl.java</span></div><h1>BlocServiceImpl.java</h1><pre class="source lang-java linenums">package tn.esprit.foyer.services;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import tn.esprit.foyer.entities.Bloc;
+import tn.esprit.foyer.entities.Chambre;
+import tn.esprit.foyer.repository.BlocRepository;
+import tn.esprit.foyer.repository.ChambreRepository;
+import tn.esprit.foyer.repository.ReservationRepository;
+import java.util.List;
+@Service
+<span class="nc" id="L14">@Slf4j</span>
+<span class="nc" id="L15">@AllArgsConstructor</span>
+public class BlocServiceImpl implements IBlocService{
+
+
+    BlocRepository blocRepository;
+    ChambreRepository chambreRepository;
+    ReservationRepository reservationRepository;
+
+    @Override
+    public List&lt;Bloc&gt; retrieveAllBlocs() {
+<span class="nc" id="L25">        return blocRepository.findAll();</span>
+    }
+
+    @Override
+    public Bloc addBloc(Bloc b) {
+
+<span class="nc" id="L31">        System.out.println(&quot;entrée dans la méthode addBloc sysout&quot;);</span>
+<span class="nc" id="L32">        log.trace(&quot;entrée dans la méthode addBloc logging&quot;);</span>
+<span class="nc" id="L33">        return blocRepository.save(b);</span>
+    }
+
+    @Override
+    public Bloc updateBloc(Bloc b) {
+<span class="nc" id="L38">        return blocRepository.save(b);</span>
+    }
+
+    @Override
+    public Bloc retrieveBloc(Long idBloc) {
+<span class="nc" id="L43">        return blocRepository.findById(idBloc).orElse(null);</span>
+    }
+
+    @Override
+    public void removeBloc(Long idBloc) {
+<span class="nc" id="L48">        log.debug(&quot;debugging&quot;);</span>
+<span class="nc" id="L49">        blocRepository.deleteById(idBloc);</span>
+
+<span class="nc" id="L51">    }</span>
+
+    @Override
+    public List&lt;Bloc&gt; findByFoyerUniversiteIdUniversite(Long idUniversite) {
+      //  return blocRepository.findByFoyerUniversiteIdUniversite(idUniversite);
+<span class="nc" id="L56">          return  blocRepository.findByFoyerUniversite(idUniversite);</span>
+    }
+    @Override
+    public Bloc affecterChambresABloc (List&lt;Long&gt; numChambre, String nomBloc) {
+<span class="nc" id="L60">        Bloc bloc = blocRepository.findByNomBloc(nomBloc);</span>
+        // ou bien tu récupére la liste de tous les chambres par keyword
+        // List&lt;Chambre&gt; findByNumChambre( numChambre); chambreRepo
+<span class="nc" id="L63">        numChambre.stream().forEach(</span>
+                chambreNumber -&gt; {
+<span class="nc" id="L65">                    Chambre c = chambreRepository.findByNumeroChambre(chambreNumber);</span>
+<span class="nc" id="L66">                    c.setBloc(bloc);</span>
+<span class="nc" id="L67">                    chambreRepository.save(c);</span>
+<span class="nc" id="L68">                }</span>
+        );
+<span class="nc" id="L70">        return bloc;</span>
+    }
+
+  //  @Scheduled(fixedRate = 60000)
+    public void fixedRateMethod() {
+<span class="nc" id="L75">        log.info(&quot;Method scheduler with fixed Rate&quot;);</span>
+<span class="nc" id="L76">    }</span>
+
+
+
+    @Scheduled(fixedRate = 60000)
+    public void listeChambresParBloc() {
+<span class="nc" id="L82">     List&lt;Bloc&gt; blocs = blocRepository.findAll();</span>
+<span class="nc" id="L83">     blocs.stream().forEach(</span>
+             bloc -&gt; {
+<span class="nc bnc" id="L85" title="All 2 branches missed.">                 if(bloc.getChambres()!=null)</span>
+                 {
+<span class="nc" id="L87">                     log.info(&quot;bloc : &quot;+ bloc.getNomBloc()+ &quot; ayant une capacité de : &quot;+bloc.getCapaciteBloc());</span>
+<span class="nc" id="L88">                     log.info(&quot;Liste des chambres du bloc &quot;+bloc.getNomBloc()+ &quot; : &quot;);</span>
+<span class="nc" id="L89">                     bloc.getChambres().stream().forEach(</span>
+                             chambre -&gt; {
+<span class="nc" id="L91">                                 log.info(&quot;chambre numéro &quot;+ chambre.getNumeroChambre()+&quot; de type &quot;+chambre.getTypeC());</span>
+<span class="nc" id="L92">                             }</span>
+                     );
+                 }
+                 else
+                 {
+<span class="nc" id="L97">                     log.info(&quot;bloc : &quot;+ bloc.getNomBloc()+ &quot; ayant une capacité de : &quot;+bloc.getCapaciteBloc());</span>
+<span class="nc" id="L98">                     log.info(&quot;bloc vide pour le moment&quot;);</span>
+                 }
+<span class="nc" id="L100">             }</span>
+     );
+<span class="nc" id="L102">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

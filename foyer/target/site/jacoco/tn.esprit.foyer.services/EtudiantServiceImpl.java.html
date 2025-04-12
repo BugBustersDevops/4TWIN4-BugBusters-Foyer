@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EtudiantServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">foyer</a> &gt; <a href="index.source.html" class="el_package">tn.esprit.foyer.services</a> &gt; <span class="el_source">EtudiantServiceImpl.java</span></div><h1>EtudiantServiceImpl.java</h1><pre class="source lang-java linenums">package tn.esprit.foyer.services;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import tn.esprit.foyer.configuration.EntityNotFoundExceptionById;
+import tn.esprit.foyer.entities.Etudiant;
+import tn.esprit.foyer.entities.Reservation;
+import tn.esprit.foyer.repository.EtudiantRepository;
+import tn.esprit.foyer.repository.FoyerRepository;
+import tn.esprit.foyer.repository.ReservationRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+<span class="nc" id="L20">@Slf4j</span>
+<span class="nc" id="L21">@AllArgsConstructor</span>
+public class EtudiantServiceImpl implements  IEtudiantService{
+
+
+
+    EtudiantRepository etudiantRepository;
+
+
+    FoyerRepository foyerRepository;
+
+
+    ReservationRepository reservationRepository;
+
+    @Override
+    public List&lt;Etudiant&gt; retrieveAllEtudiants() {
+<span class="nc" id="L36">        return etudiantRepository.findAll();</span>
+    }
+
+    @Override
+    public Etudiant addEtudiant(Etudiant e) {
+<span class="nc" id="L41">        log.info(&quot;debut methode addEtudiant&quot;);</span>
+        // calcul tranche Age selon l'age
+<span class="nc" id="L43">        return etudiantRepository.save(e);</span>
+    }
+
+    @Override
+    public Etudiant updateEtudiant(Etudiant e) {
+<span class="nc" id="L48">        log.info(&quot;debut methode updateEtudiant&quot;);</span>
+<span class="nc" id="L49">        return etudiantRepository.save(e);</span>
+    }
+
+    @Override
+    public Etudiant retrieveEtudiant(Long idEtudiant) {
+<span class="nc" id="L54">        Etudiant e = etudiantRepository.findById(idEtudiant).orElse(null);</span>
+<span class="nc" id="L55">        log.info(&quot;fin methode retrieveEtudiant&quot;);</span>
+
+<span class="nc" id="L57">        return e;</span>
+    }
+
+    @Override
+    public void removeEtudiant(Long idEtudiant) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (!etudiantRepository.existsById(idEtudiant)) {</span>
+<span class="nc" id="L63">            throw new EntityNotFoundExceptionById(&quot;Invalid Id Etudiant was provided&quot;);</span>
+        }
+<span class="nc" id="L65">            etudiantRepository.deleteById(idEtudiant);</span>
+<span class="nc" id="L66">    }</span>
+
+    @Override
+    public List&lt;Etudiant&gt; addEtudiants(List&lt;Etudiant&gt; etudiants) {
+<span class="nc" id="L70">        log.info(&quot;debut methode addEtudiants&quot;);</span>
+<span class="nc" id="L71">        List&lt;Etudiant&gt; etudiants1 =  etudiantRepository.saveAll(etudiants);</span>
+<span class="nc" id="L72">        log.info(&quot;fin methode addEtudiants&quot;);</span>
+<span class="nc" id="L73">        return etudiants1;</span>
+    }
+
+    @Override
+    public Etudiant affecterEtudiantAReservation(String nomEt, String prenomEt,
+                                                 String idReservation) {
+<span class="nc" id="L79">        Etudiant e = etudiantRepository.findByNomEtAndPrenomEt( nomEt, prenomEt);</span>
+<span class="nc" id="L80">        Reservation r = reservationRepository.findById(idReservation).orElse(null);</span>
+           // controle de saisie +
+<span class="nc" id="L82">          List&lt;Etudiant&gt; etudiants = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (r.getEtudiants()!=null) {</span>
+<span class="nc" id="L84">            etudiants.addAll(r.getEtudiants());</span>
+        }
+<span class="nc" id="L86">            etudiants.add(e);</span>
+<span class="nc" id="L87">            r.setEtudiants(etudiants);</span>
+<span class="nc" id="L88">           reservationRepository.save(r);</span>
+<span class="nc" id="L89">        return e;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

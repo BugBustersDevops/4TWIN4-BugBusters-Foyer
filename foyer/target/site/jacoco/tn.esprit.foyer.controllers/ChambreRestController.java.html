@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChambreRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">foyer</a> &gt; <a href="index.source.html" class="el_package">tn.esprit.foyer.controllers</a> &gt; <span class="el_source">ChambreRestController.java</span></div><h1>ChambreRestController.java</h1><pre class="source lang-java linenums">package tn.esprit.foyer.controllers;
+
+
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import tn.esprit.foyer.entities.Chambre;
+import tn.esprit.foyer.entities.TypeChambre;
+import tn.esprit.foyer.services.IChambreService;
+import java.util.List;
+
+@RestController
+<span class="nc" id="L12">@AllArgsConstructor</span>
+@RequestMapping(&quot;/chambre&quot;)
+
+public class ChambreRestController {
+    IChambreService chambreService;
+    // http://localhost:8089/foyer/chambre/retrieve-all-chambres
+    @GetMapping(&quot;/retrieve-all-chambres&quot;)
+    @ResponseBody
+    public List&lt;Chambre&gt; getChambres() {
+<span class="nc" id="L21">        List&lt;Chambre&gt; listChambres = chambreService.retrieveAllChambres();</span>
+<span class="nc" id="L22">        return listChambres;</span>
+    }
+
+    // http://localhost:8089/foyer/chambre/retrieve-chambre/8
+    @GetMapping(&quot;/retrieve-chambre/{chambreId}&quot;)
+    @ResponseBody
+    public Chambre retrieveChambre(@PathVariable(&quot;chambreId&quot;) Long chambreId) {
+<span class="nc" id="L29">        return chambreService.retrieveChambre(chambreId);</span>
+    }
+
+    // http://localhost:8089/foyer/chambre/add-chambre
+    @PostMapping(&quot;/add-chambre&quot;)
+    @ResponseBody
+    public Chambre addChambre(@RequestBody Chambre c) {
+<span class="nc" id="L36">        Chambre chambre= chambreService.addChambre(c);</span>
+<span class="nc" id="L37">        return chambre;</span>
+    }
+
+    // http://localhost:8089/foyer/chambre/update-chambre
+    @PutMapping(&quot;/update-chambre&quot;)
+    @ResponseBody
+    public Chambre updateChambre(@RequestBody Chambre c) {
+<span class="nc" id="L44">        return chambreService.updateChambre(c);</span>
+    }
+    // http://localhost:8089/foyer/chambre/removeChambre
+    @DeleteMapping(&quot;/removeChambre/{idChambre}&quot;)
+    @ResponseBody
+    public void removeChambre(@PathVariable(&quot;idChambre&quot;) Long idChambre) {
+<span class="nc" id="L50">        chambreService.removeChambre(idChambre);</span>
+<span class="nc" id="L51">    }</span>
+
+    // http://localhost:8089/foyer/chambre/findByTypeCAndBlocIdBloc/DOUBLE/1
+    @GetMapping(&quot;/findByTypeCAndBlocIdBloc/{typeChambre}/{idBloc}&quot;)
+    @ResponseBody
+    public List&lt;Chambre&gt; findByTypeCAndBlocIdBloc(@PathVariable(&quot;typeChambre&quot;) TypeChambre t, @PathVariable(&quot;idBloc&quot;)  Long idBloc) {
+<span class="nc" id="L57">        List&lt;Chambre&gt; listChambresByTypeCAndBlocIdBloc = chambreService.findByTypeCAndBlocIdBloc(t,idBloc);</span>
+<span class="nc" id="L58">        return listChambresByTypeCAndBlocIdBloc;</span>
+    }
+
+    // http://localhost:8089/foyer/chambre/findByReservationsEstValid/true
+    @GetMapping(&quot;/findByReservationsEstValid/{estValid}&quot;)
+    @ResponseBody
+    public List&lt;Chambre&gt; findByReservationsEstValid(@PathVariable(&quot;estValid&quot;) Boolean estValid) {
+<span class="nc" id="L65">        return chambreService.findByReservationsEstValid(estValid);</span>
+    }
+
+    // http://localhost:8089/foyer/chambre/findByBlocIdBlocAndBlocCapaciteBloc/1/100
+    @GetMapping(&quot;/findByBlocIdBlocAndBlocCapaciteBloc/{idBloc}/{capaciteBloc}&quot;)
+    @ResponseBody
+    public List&lt;Chambre&gt; findByBlocIdBlocAndBlocCapaciteBloc(@PathVariable(&quot;idBloc&quot;) Long idBloc,@PathVariable(&quot;capaciteBloc&quot;)  Long capaciteBloc) {
+<span class="nc" id="L72">       return chambreService.findByBlocIdBlocAndBlocCapaciteBlocGreaterThan(idBloc,capaciteBloc);</span>
+    }
+
+
+    // http://localhost:8089/foyer/chambre/getChambresParNomBloc/A
+    @GetMapping(&quot;/getChambresParNomBloc/{nomBloc}&quot;)
+    @ResponseBody
+    public  List&lt;Chambre&gt; getChambresParNomBloc(@PathVariable(&quot;nomBloc&quot;) String n) {
+<span class="nc" id="L80">        return chambreService.getChambresParNomBloc(n);</span>
+    }
+
+    // http://localhost:8089/foyer/chambre/nbChambreParTypeEtBloc/DOUBLE/1
+    @GetMapping(&quot;/nbChambreParTypeEtBloc/{type}/{idBloc}&quot;)
+    @ResponseBody
+    public  long nbChambreParTypeEtBloc(@PathVariable(&quot;type&quot;) TypeChambre type, @PathVariable(&quot;idBloc&quot;) long idBloc) {
+<span class="nc" id="L87">        return chambreService.nbChambreParTypeEtBloc(type,idBloc);</span>
+    }
+        // http://localhost:8089/foyer/chambre/getChambresNonReserveParNomFoyerEtTypeChambre/esprit foyer/SIMPLE
+        @GetMapping(&quot;/getChambresNonReserveParNomFoyerEtTypeChambre/{nomFoyer}/{type}&quot;)
+        @ResponseBody
+        public  List&lt;Chambre&gt; getChambresNonReserveParNomFoyerEtTypeChambre(@PathVariable(&quot;nomFoyer&quot;) String nomFoyer,@PathVariable(&quot;type&quot;) TypeChambre type) {
+<span class="nc" id="L93">            return chambreService.getChambresNonReserveParNomFoyerEtTypeChambre(nomFoyer,type);</span>
+        }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
