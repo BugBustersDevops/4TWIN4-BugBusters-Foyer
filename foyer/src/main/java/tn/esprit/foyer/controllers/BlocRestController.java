@@ -17,15 +17,6 @@ public class BlocRestController {
 
 
 
-
-
-
-
-
-
-
-
-
     // http://localhost:8089/foyer/bloc/retrieve-all-blocs
     @GetMapping("/retrieve-all-blocs")
     @ResponseBody
