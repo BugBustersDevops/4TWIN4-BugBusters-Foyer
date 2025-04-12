@@ -8,7 +8,9 @@ import tn.esprit.foyer.repository.BlocRepository;
 import tn.esprit.foyer.repository.FoyerRepository;
 import tn.esprit.foyer.services.IFoyerService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -35,6 +37,11 @@ public class FoyerServiceImpl implements IFoyerService {
     }
 
     @Override
+    public Foyer updateFoyer(Foyer f) {
+        return foyerRepository.save(f);
+    }
+
+    @Override
     public Foyer addFoyerWithBloc(Foyer f) {
         log.info("Ajout d'un foyer avec blocs : {}", f.getNomFoyer());
 
@@ -56,16 +63,29 @@ public class FoyerServiceImpl implements IFoyerService {
         return foyer;
     }
 
+
+
     @Override
-    public Foyer updateFoyer(Foyer f) {
-        log.info("Mise à jour du foyer ID : {}", f.getIdFoyer());
+    public List<Map<String, Object>> getFoyersStats(String universiteNom, Long capaciteMin) {
+        log.info("Récupération des stats foyers pour université '{}' (capacité min: {})", universiteNom, capaciteMin);
+
         try {
-            Foyer updatedFoyer = foyerRepository.save(f);
-            log.info("Foyer ID {} mis à jour avec succès", f.getIdFoyer());
-            return updatedFoyer;
+            List<Object[]> results = foyerRepository.findFoyersWithStats(universiteNom, capaciteMin);
+            log.debug("{} résultats bruts trouvés", results.size());
+
+            return results.stream().map(row -> {
+                Map<String, Object> stats = new HashMap<>();
+                stats.put("foyer", row[0]);
+                stats.put("nombreBlocs", row[1]);
+                stats.put("capaciteTotale", row[2]);
+                return stats;
+            }).toList();
+
         } catch (Exception e) {
-            log.error("Erreur lors de la mise à jour du foyer ID {} : {}", f.getIdFoyer(), e.getMessage());
+            log.error("Erreur stats foyers pour {} : {}", universiteNom, e.getMessage());
             throw e;
+        } finally {
+            log.info("Fin traitement stats pour {}", universiteNom);
         }
     }
 
@@ -89,4 +109,13 @@ public class FoyerServiceImpl implements IFoyerService {
             throw e;
         }
     }
+
+    @Override
+    public List<Foyer> getFoyersByUniversiteAndBloc(String nomUniversite, String nomBloc) {
+        log.info("Recherche combinée pour université {} et bloc {}", nomUniversite, nomBloc);
+        List<Foyer> foyers = foyerRepository.findByUniversiteNomUniversiteAndBlocsNomBloc(nomUniversite, nomBloc);
+        log.debug("{} foyers correspondants trouvés", foyers.size());
+        return foyers;
+    }
+
 }
