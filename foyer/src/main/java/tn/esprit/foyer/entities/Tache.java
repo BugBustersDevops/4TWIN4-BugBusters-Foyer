@@ -17,17 +17,21 @@ public class Tache implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTache;
+
     @NonNull
     private LocalDate dateTache;
+
     @NonNull
     Integer duree;
+
+    @NonNull
     Float tarifHoraire;
+
     @Enumerated(EnumType.STRING)
     TypeTache typeTache;
-    @ManyToOne()
+
+    @ManyToOne
     @JsonIgnore
     Etudiant etudiant;
-    @OneToOne(mappedBy = "tache")
-    Etudiant etudiantResponsable;
 }
 

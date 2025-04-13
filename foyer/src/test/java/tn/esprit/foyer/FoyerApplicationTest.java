@@ -1,12 +1,14 @@
 package tn.esprit.foyer;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FoyerApplicationTest {
+@SpringBootTest
+class FoyerApplicationTest {
 
     @Test
-    public void sampleTest() {
-        assertTrue(true); // dummy test
+    void contextLoads() {
     }
 }

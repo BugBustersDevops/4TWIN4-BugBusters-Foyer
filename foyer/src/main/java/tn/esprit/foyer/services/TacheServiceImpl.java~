@@ -49,8 +49,8 @@ public class TacheServiceImpl implements ITacheService{
 
 
     @Override
-    public List<Tache> addTachesAndAffectToEtudiant(List<Tache> taches, Long cinEtudiant) {
-        Etudiant et = etudiantRepository.findByCin(cinEtudiant);
+    public List<Tache> addTachesAndAffectToEtudiant(List<Tache> taches, String nomEt, String prenomEt) {
+        Etudiant et = etudiantRepository.findByNomEtAndPrenomEt(nomEt,prenomEt);
         taches.forEach(tache -> {
             tache.setEtudiant(et);
         });

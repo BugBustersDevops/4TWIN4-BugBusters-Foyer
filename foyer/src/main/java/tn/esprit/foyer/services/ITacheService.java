@@ -14,7 +14,7 @@ public interface ITacheService {
     Tache retrieveTache(Long idTache);
     void removeTache(Long idTache);
 
-     List<Tache>  addTachesAndAffectToEtudiant (List<Tache> taches, String nomEt, String prenomEt ) ;
+    List<Tache>  addTachesAndAffectToEtudiant (List<Tache> taches, Long cinEtudiant ) ;
 
     HashMap<String,Float > calculNouveauMontantInscriptionDesEtudiants() ;
 

@@ -18,43 +18,32 @@ public class Etudiant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEtudiant; // Clé primaire
+
     @NonNull
     private String nomEt;
+
     @NonNull
-     String prenomEt;
-     Long cin;
-     String ecole;
-     LocalDate dateNaissance;
+    private String prenomEt;
 
+    @NonNull
+    private Long cin;
 
+    @NonNull
+    private String ecole;
 
+    @NonNull
+    private LocalDate dateNaissance;
 
+    private float montantInscription = 500;
 
-
-
-
-
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private TypeEtudiant typeEtudiant;
 
     @OneToMany(mappedBy = "etudiant")
-    List<Tache> taches;
-    Float montantInscription;
-    @Enumerated(EnumType.STRING)
-    TypeEtudiant typeEtudiant;
+    private List<Tache> taches;
 
     @ManyToMany(mappedBy = "etudiants",fetch = FetchType.EAGER)
     List<Reservation> reservations;
-
-    @OneToOne
-    Tache tache;
-    public Etudiant(String nomEt, String prenomEt, String ecole) {
-        this.nomEt = nomEt;
-        this.prenomEt = prenomEt;
-        this.ecole = ecole;
-    }
-
-
-
-
-
 }
 

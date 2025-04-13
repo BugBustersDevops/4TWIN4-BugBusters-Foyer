@@ -56,10 +56,10 @@ public class TacheRestController {
     }
 
     // http://localhost:8089/foyer/tache/addTachesAndAffectToEtudiant
-    @PostMapping("/addTachesAndAffectToEtudiant/{cinEtudiant}")
+    @PostMapping("/addTachesAndAffectToEtudiant/{nomEt}/{prenomEt}")
     @ResponseBody
-    public List<Tache> addTachesAndAffectToEtudiant(@RequestBody List<Tache> taches, @PathVariable("cinEtudiant") Long cinEtudiant) {
-        return tacheService.addTachesAndAffectToEtudiant(taches, cinEtudiant);
+    public List<Tache> addTachesAndAffectToEtudiant(@RequestBody List<Tache> taches, @PathVariable("nomEt") String nomEt, @PathVariable("prenomEt") String prenomEt) {
+        return tacheService.addTachesAndAffectToEtudiant(taches, nomEt, prenomEt);
     }
 
     // http://localhost:8089/foyer/tache/calculNouveauMontantInscriptionDesEtudiants
