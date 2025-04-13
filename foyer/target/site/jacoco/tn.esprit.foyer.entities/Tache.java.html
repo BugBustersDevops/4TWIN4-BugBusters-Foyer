@@ -8,11 +8,11 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
-<span class="nc bnc" id="L11" title="All 6 branches missed.">@Setter</span>
-<span class="fc" id="L12">@NoArgsConstructor</span>
+<span class="pc bnc" id="L11" title="All 6 branches missed.">@Setter</span>
+<span class="nc" id="L12">@NoArgsConstructor</span>
 <span class="nc bnc" id="L13" title="All 6 branches missed.">@AllArgsConstructor</span>
 <span class="nc" id="L14">@ToString</span>
-<span class="nc bnc" id="L15" title="All 6 branches missed.">@RequiredArgsConstructor</span>
+<span class="pc bpc" id="L15" title="3 of 6 branches missed.">@RequiredArgsConstructor</span>
 public class Tache implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class Tache implements Serializable {
 
     @ManyToOne
     @JsonIgnore
-<span class="nc" id="L35">    Etudiant etudiant;</span>
+<span class="fc" id="L35">    Etudiant etudiant;</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
