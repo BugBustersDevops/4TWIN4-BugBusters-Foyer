@@ -11,7 +11,7 @@ foyer,tn.esprit.foyer.configuration,OpenAPIConfig,39,0,0,0,7,0,2,0,2,0
 foyer,tn.esprit.foyer.configuration,LoggingAspect,43,0,0,0,14,0,6,0,6,0
 foyer,tn.esprit.foyer,FoyerApplication,8,0,0,0,3,0,2,0,2,0
 foyer,tn.esprit.foyer.entities,TypeEtudiant,15,0,0,0,2,0,1,0,1,0
-foyer,tn.esprit.foyer.entities,TypeTache,21,0,0,0,2,0,1,0,1,0
+foyer,tn.esprit.foyer.entities,TypeTache,0,21,0,0,0,2,0,1,0,1
 foyer,tn.esprit.foyer.entities,Universite.UniversiteBuilder,45,0,0,0,1,0,7,0,7,0
 foyer,tn.esprit.foyer.entities,Reservation,50,0,0,0,8,0,11,0,11,0
 foyer,tn.esprit.foyer.entities,Chambre.ChambreBuilder,54,0,0,0,1,0,8,0,8,0
@@ -21,7 +21,7 @@ foyer,tn.esprit.foyer.entities,Etudiant,256,43,38,4,9,6,35,10,14,10
 foyer,tn.esprit.foyer.entities,Universite,50,0,0,0,8,0,11,0,11,0
 foyer,tn.esprit.foyer.entities,Bloc,148,0,16,0,14,0,23,0,15,0
 foyer,tn.esprit.foyer.entities,Foyer,60,0,0,0,9,0,13,0,13,0
-foyer,tn.esprit.foyer.entities,Tache,130,25,15,3,8,3,22,3,13,3
+foyer,tn.esprit.foyer.entities,Tache,126,29,15,3,8,3,21,4,12,4
 foyer,tn.esprit.foyer.entities,Foyer.FoyerBuilder,54,0,0,0,1,0,8,0,8,0
 foyer,tn.esprit.foyer.entities,Reservation.ReservationBuilder,45,0,0,0,1,0,7,0,7,0
 foyer,tn.esprit.foyer.services,ChambreServiceImpl,213,0,16,0,38,0,25,0,17,0

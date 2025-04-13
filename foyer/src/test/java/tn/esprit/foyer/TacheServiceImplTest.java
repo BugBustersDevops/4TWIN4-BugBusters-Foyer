@@ -1,9 +1,12 @@
 package tn.esprit.foyer;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.foyer.entities.Etudiant;
 import tn.esprit.foyer.entities.Tache;
+import tn.esprit.foyer.entities.TypeTache;
 import tn.esprit.foyer.repository.EtudiantRepository;
 import tn.esprit.foyer.repository.TacheRepository;
 import tn.esprit.foyer.services.TacheServiceImpl;
@@ -11,13 +14,14 @@ import tn.esprit.foyer.services.TacheServiceImpl;
 import java.time.LocalDate;
 import java.util.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
+@DisplayName("Unit tests for TacheServiceImpl")
 public class TacheServiceImplTest {
 
     @Mock
@@ -28,11 +32,6 @@ public class TacheServiceImplTest {
 
     @InjectMocks
     TacheServiceImpl tacheService;
-
-    @BeforeEach
-    void init() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void testCalculNouveauMontantInscriptionDesEtudiants() {
@@ -57,7 +56,9 @@ public class TacheServiceImplTest {
         et.setCin(12345678L);
 
         Tache t1 = new Tache(LocalDate.now(), 2, 50f);
+        t1.setTypeTache(TypeTache.BRICOLAGE);
         Tache t2 = new Tache(LocalDate.now(), 3, 60f);
+        t2.setTypeTache(TypeTache.JARDINAGE);
         List<Tache> taches = List.of(t1, t2);
 
         when(etudiantRepository.findByCin(12345678L)).thenReturn(et);

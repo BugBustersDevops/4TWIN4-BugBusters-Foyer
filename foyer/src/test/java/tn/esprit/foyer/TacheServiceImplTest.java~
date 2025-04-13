@@ -1,6 +1,8 @@
 package tn.esprit.foyer;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import tn.esprit.foyer.entities.Etudiant;
 import tn.esprit.foyer.entities.Tache;
@@ -18,7 +20,8 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+@DisplayName("Unit tests for TacheServiceImpl")
 public class TacheServiceImplTest {
 
     @Mock
@@ -29,11 +32,6 @@ public class TacheServiceImplTest {
 
     @InjectMocks
     TacheServiceImpl tacheService;
-
-    @BeforeEach
-    void init() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void testCalculNouveauMontantInscriptionDesEtudiants() {
