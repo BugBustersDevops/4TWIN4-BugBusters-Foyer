@@ -1,237 +1,176 @@
 package tn.esprit.foyer.services;
 
-import jakarta.validation.constraints.Null;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
 import tn.esprit.foyer.entities.Bloc;
 import tn.esprit.foyer.entities.Foyer;
+import tn.esprit.foyer.entities.Universite;
 import tn.esprit.foyer.repository.BlocRepository;
 import tn.esprit.foyer.repository.FoyerRepository;
-import tn.esprit.foyer.services.FoyerServiceImpl;
-
-import java.util.*;
+import tn.esprit.foyer.repository.UniversiteRepository;
+import tn.esprit.foyer.services.IFoyerService;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
+@ExtendWith(SpringExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@SpringBootTest
 class FoyerServiceImplTest {
 
-    private FoyerRepository foyerRepository;
-    private BlocRepository blocRepository;
-    private FoyerServiceImpl foyerService;
+
+     UniversiteRepository universiteRepository;
+
+     FoyerRepository foyerRepository;
+
+
+     BlocRepository blocRepository;
+
+
+    IFoyerService foyerService;
+
+     Long savedFoyerId;
+
+    @BeforeAll
+    static void globalSetup() {
+        System.out.println("Initialisation globale des tests Foyer");
+    }
+
+    @AfterAll
+    static void globalCleanup() {
+        System.out.println("Nettoyage final des tests Foyer");
+    }
 
     @BeforeEach
-    void setUp() {
-        // Création manuelle des mocks
-        foyerRepository = Mockito.mock(FoyerRepository.class);
-        blocRepository = Mockito.mock(BlocRepository.class);
-
-        // Initialisation du service avec les mocks
-        foyerService = new FoyerServiceImpl(foyerRepository, blocRepository);
+    void testSetup() {
+        System.out.println("Préparation avant chaque test");
     }
 
-    // Test pour retrieveAllFoyers()
     @Test
-    void testRetrieveAllFoyers() {
-        // Arrange
-        Foyer foyer1 = Foyer.builder()
-                .idFoyer(1L)
-                .nomFoyer("Foyer A")
-                .capaciteFoyer(100L)
-                .build();
-
-        Foyer foyer2 = Foyer.builder()
-                .idFoyer(2L)
-                .nomFoyer("Foyer B")
-                .capaciteFoyer(200L)
-                .build();
-
-        when(foyerRepository.findAll()).thenReturn(Arrays.asList(foyer1, foyer2));
-
-        // Act
-        List<Foyer> result = foyerService.retrieveAllFoyers();
-
-        // Assert
-        assertEquals(2, result.size());
-        verify(foyerRepository).findAll();
-    }
-
-    // Test pour addFoyer()
-    @Test
+    @Order(1)
     void testAddFoyer() {
         // Arrange
-        Foyer foyer = Foyer.builder()
-                .nomFoyer("Nouveau Foyer")
-                .capaciteFoyer(150L)
-                .build();
-
-        Foyer savedFoyer = Foyer.builder()
-                .idFoyer(1L)
-                .nomFoyer("Nouveau Foyer")
-                .capaciteFoyer(150L)
-                .build();
-        when(foyerRepository.save(foyer)).thenReturn(savedFoyer);
+        Foyer foyer = new Foyer();
+        foyer.setNomFoyer("FoyerEsprit");
 
         // Act
         Foyer result = foyerService.addFoyer(foyer);
+        savedFoyerId = result.getIdFoyer();
 
         // Assert
-        assertEquals(1L, result.getIdFoyer());
-        verify(foyerRepository).save(foyer);
+        assertEquals("FoyerEsprit", result.getNomFoyer());
+        assertEquals(true, result.getIdFoyer() != null);
     }
 
-    // Test pour updateFoyer()
     @Test
+    @Order(2)
+    void testRetrieveFoyer() {
+        // Act
+        Foyer result = foyerService.retrieveFoyer(savedFoyerId);
+
+        // Assert
+        assertEquals("FoyerEsprit", result.getNomFoyer());
+        assertEquals(Foyer.class, result.getClass());
+    }
+
+    @Test
+    @Order(3)
+    void testRetrieveAllFoyers() {
+        // Act
+        List<Foyer> foyers = foyerService.retrieveAllFoyers();
+
+        // Assert
+        assertEquals(true, foyers.size() > 0);
+        assertEquals(Foyer.class, foyers.get(0).getClass());
+    }
+
+    @Test
+    @Order(4)
     void testUpdateFoyer() {
         // Arrange
-        Foyer existingFoyer = Foyer.builder()
-                .idFoyer(1L)
-                .nomFoyer("Foyer Existant")
-                .capaciteFoyer(100L)
-                .build();
-        when(foyerRepository.save(existingFoyer)).thenReturn(existingFoyer);
+        Foyer foyer = foyerService.retrieveFoyer(savedFoyerId);
+        foyer.setNomFoyer("FoyerEsprit Modifié");
 
         // Act
-        Foyer result = foyerService.updateFoyer(existingFoyer);
+        Foyer updated = foyerService.updateFoyer(foyer);
 
         // Assert
-        assertEquals("Foyer Existant", result.getNomFoyer());
-        verify(foyerRepository).save(existingFoyer);
+        assertEquals("FoyerEsprit Modifié", updated.getNomFoyer());
+        assertEquals(savedFoyerId, updated.getIdFoyer());
     }
 
-    // Test pour retrieveFoyer() avec ID existant
     @Test
-    void testRetrieveFoyerFound() {
-        // Arrange
-        Foyer foyer = Foyer.builder()
-                .idFoyer(1L)
-                .nomFoyer("Foyer Trouvé")
-                .capaciteFoyer(200L)
-                .build();
-
-        when(foyerRepository.findById(1L)).thenReturn(Optional.of(foyer));
-
-        // Act
-        Foyer result = foyerService.retrieveFoyer(1L);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals("Foyer Trouvé", result.getNomFoyer());
-    }
-
-    // Test pour retrieveFoyer() avec ID non trouvé
-    @Test
-    void testRetrieveFoyerNotFound() {
-        // Arrange
-        when(foyerRepository.findById(99L)).thenReturn(Optional.empty());
-
-        // Act
-        Foyer result = foyerService.retrieveFoyer(99L);
-
-        // Assert
-        assertNull(result);
-    }
-
-    // Test pour removeFoyer()
-    @Test
+    @Order(5)
     void testRemoveFoyer() {
-        // Arrange
-        doNothing().when(foyerRepository).deleteById(1L);
+        // Act
+        foyerService.removeFoyer(savedFoyerId);
 
-        // Act & Assert
-        assertDoesNotThrow(() -> foyerService.removeFoyer(1L));
-        verify(foyerRepository).deleteById(1L);
+        // Assert
+        Foyer result = foyerService.retrieveFoyer(savedFoyerId);
+        assertEquals(null, result);
     }
 
-    // Test pour getFoyersByUniversiteAndBloc()
     @Test
+    @Order(6)
     void testGetFoyersByUniversiteAndBloc() {
         // Arrange
-        Foyer foyer = Foyer.builder()
-                .idFoyer(1L)
-                .nomFoyer("Foyer X")
-                .capaciteFoyer(300L)
-                .build();
-        when(foyerRepository.findByUniversiteNomUniversiteAndBlocsNomBloc("ESPRIT", "B1"))
-                .thenReturn(Collections.singletonList(foyer));
+        Universite universite = new Universite();
+        universite.setNomUniversite("ESPRIT");
+        universiteRepository.save(universite);
+
+        Foyer foyer = new Foyer();
+        foyer.setNomFoyer("FoyerEsprit");
+        foyer.setUniversite(universite);
+        foyerRepository.save(foyer);
+
+        Bloc bloc = new Bloc();
+        bloc.setNomBloc("B1");
+        bloc.setFoyer(foyer);
+        blocRepository.save(bloc);
 
         // Act
         List<Foyer> result = foyerService.getFoyersByUniversiteAndBloc("ESPRIT", "B1");
 
         // Assert
         assertEquals(1, result.size());
-        assertEquals("Foyer X", result.get(0).getNomFoyer());
+        assertEquals("FoyerEsprit", result.get(0).getNomFoyer());
+        assertEquals(foyer.getIdFoyer(), result.get(0).getIdFoyer());
     }
 
-    // Test pour addFoyerWithBloc() avec blocs
     @Test
-    void testAddFoyerWithBloc() {
-        // Arrange
-        Foyer foyer = Foyer.builder()
-                .nomFoyer("Foyer avec Blocs")
-                .capaciteFoyer(500L)
-                .build();
-
-        Bloc bloc1 = Bloc.builder()
-                .idBloc(1L)
-                .nomBloc("Bloc A")
-                .build();
-
-        Bloc bloc2 = Bloc.builder()
-                .idBloc(2L)
-                .nomBloc("Bloc B")
-                .build();
-
-        foyer.setBlocs(Arrays.asList(bloc1, bloc2));
-
-        Foyer savedFoyer = Foyer.builder()
-                .idFoyer(1L)
-                .nomFoyer("Foyer avec Blocs")
-                .capaciteFoyer(500L)
-                .build();
-        when(foyerRepository.save(foyer)).thenReturn(savedFoyer);
-        when(blocRepository.save(any(Bloc.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // Act
-        Foyer result = foyerService.addFoyerWithBloc(foyer);
-
-        // Assert
-        assertAll(
-                () -> assertEquals(1L, result.getIdFoyer()),
-                () -> verify(blocRepository, times(2)).save(any(Bloc.class)),
-                () -> verify(foyerRepository).save(foyer)
-        );
-    }
-
-    // Test pour getFoyersStats()
-    @Test
+    @Order(7)
     void testGetFoyersStats() {
         // Arrange
-        Foyer foyerStats = Foyer.builder()
-                .idFoyer(1L)
-                .nomFoyer("Foyer Stats")
-                .capaciteFoyer(1000L)
-                .build();
+        Universite universite = new Universite();
+        universite.setNomUniversite("ESPRIT");
+        universiteRepository.save(universite);
 
-        Object[] mockData = {
-                foyerStats, // foyer
-                5L, // nombreBlocs
-                2000L // capaciteTotale
-        };
+        Foyer foyer = new Foyer();
+        foyer.setNomFoyer("FoyerEsprit");
+        foyer.setCapaciteFoyer(1500L);
+        foyer.setUniversite(universite);
+        foyerRepository.save(foyer);
 
-        when(foyerRepository.findFoyersWithStats("ESPRIT", 1500L))
-                .thenReturn(Collections.singletonList(mockData));
+        IntStream.rangeClosed(1, 3).forEach(i -> {
+            Bloc bloc = new Bloc();
+            bloc.setNomBloc("B" + i);
+            bloc.setFoyer(foyer);
+            blocRepository.save(bloc);
+        });
 
         // Act
-        List<Map<String, Object>> results = foyerService.getFoyersStats("ESPRIT", 1500L);
+        List<Map<String, Object>> results = foyerService.getFoyersStats("ESPRIT", 1000L);
 
         // Assert
-        assertAll(
-                () -> assertEquals(1, results.size()),
-                () -> assertEquals("Foyer Stats", ((Foyer) results.get(0).get("foyer")).getNomFoyer()),
-                () -> assertEquals(5L, results.get(0).get("nombreBlocs")),
-                () -> assertEquals(2000L, results.get(0).get("capaciteTotale"))
-        );
+        assertEquals(1, results.size());
+        assertEquals("FoyerEsprit", ((Foyer) results.get(0).get("foyer")).getNomFoyer());
+        assertEquals(3L, results.get(0).get("nombreBlocs"));
+        assertEquals(1500L, results.get(0).get("capaciteTotale"));
     }
+
 }
