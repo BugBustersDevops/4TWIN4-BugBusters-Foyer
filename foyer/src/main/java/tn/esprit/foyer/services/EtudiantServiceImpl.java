@@ -23,11 +23,9 @@ public class EtudiantServiceImpl implements  IEtudiantService{
 
 
 
-    EtudiantRepository etudiantRepository;
-
-
     FoyerRepository foyerRepository;
 
+    EtudiantRepository etudiantRepository;
 
     ReservationRepository reservationRepository;
 
@@ -42,6 +40,8 @@ public class EtudiantServiceImpl implements  IEtudiantService{
         // calcul tranche Age selon l'age
         return etudiantRepository.save(e);
     }
+
+
 
     @Override
     public Etudiant updateEtudiant(Etudiant e) {

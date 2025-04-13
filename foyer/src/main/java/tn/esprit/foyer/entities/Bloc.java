@@ -13,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
@@ -29,8 +30,6 @@ public class Bloc implements Serializable {
     @ManyToOne
     @JsonIgnore
      Foyer foyer;
-
-
 
 
 
