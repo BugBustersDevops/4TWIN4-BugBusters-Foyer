@@ -8,27 +8,31 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
-<span class="nc bnc" id="L11" title="All 4 branches missed.">@Setter</span>
-<span class="nc" id="L12">@NoArgsConstructor</span>
-<span class="nc bnc" id="L13" title="All 4 branches missed.">@AllArgsConstructor</span>
+<span class="nc bnc" id="L11" title="All 6 branches missed.">@Setter</span>
+<span class="fc" id="L12">@NoArgsConstructor</span>
+<span class="nc bnc" id="L13" title="All 6 branches missed.">@AllArgsConstructor</span>
 <span class="nc" id="L14">@ToString</span>
-<span class="nc bnc" id="L15" title="All 4 branches missed.">@RequiredArgsConstructor</span>
+<span class="nc bnc" id="L15" title="All 6 branches missed.">@RequiredArgsConstructor</span>
 public class Tache implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 <span class="nc" id="L19">    private Long idTache;</span>
+
     @NonNull
-<span class="nc" id="L21">    private LocalDate dateTache;</span>
+<span class="nc" id="L22">    private LocalDate dateTache;</span>
+
     @NonNull
-<span class="nc" id="L23">    Integer duree;</span>
-<span class="nc" id="L24">    Float tarifHoraire;</span>
+<span class="nc" id="L25">    Integer duree;</span>
+
+    @NonNull
+<span class="nc" id="L28">    Float tarifHoraire;</span>
+
     @Enumerated(EnumType.STRING)
-<span class="nc" id="L26">    TypeTache typeTache;</span>
-    @ManyToOne()
+<span class="nc" id="L31">    TypeTache typeTache;</span>
+
+    @ManyToOne
     @JsonIgnore
-<span class="nc" id="L29">    Etudiant etudiant;</span>
-    @OneToOne(mappedBy = &quot;tache&quot;)
-<span class="nc" id="L31">    Etudiant etudiantResponsable;</span>
+<span class="nc" id="L35">    Etudiant etudiant;</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

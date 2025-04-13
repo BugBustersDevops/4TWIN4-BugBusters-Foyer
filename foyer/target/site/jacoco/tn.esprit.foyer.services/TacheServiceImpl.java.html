@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-<span class="nc" id="L17">@Slf4j</span>
-<span class="nc" id="L18">@AllArgsConstructor</span>
+<span class="fc" id="L17">@Slf4j</span>
+<span class="fc" id="L18">@AllArgsConstructor</span>
 public class TacheServiceImpl implements ITacheService{
 
     TacheRepository tacheRepository;
@@ -49,49 +49,48 @@ public class TacheServiceImpl implements ITacheService{
 
 
     @Override
-    public List&lt;Tache&gt; addTachesAndAffectToEtudiant(List&lt;Tache&gt; taches, String nomEt, String prenomEt) {
-<span class="nc" id="L53">        Etudiant et = etudiantRepository.findByNomEtAndPrenomEt(nomEt,prenomEt);</span>
+    public List&lt;Tache&gt; addTachesAndAffectToEtudiant(List&lt;Tache&gt; taches, Long cinEtudiant) {
+<span class="nc" id="L53">        Etudiant et = etudiantRepository.findByCin(cinEtudiant);</span>
 <span class="nc" id="L54">        taches.forEach(tache -&gt; {</span>
 <span class="nc" id="L55">            tache.setEtudiant(et);</span>
-          //  tacheRepository.save(tache);
-<span class="nc" id="L57">        });</span>
-<span class="nc" id="L58">        tacheRepository.saveAll(taches);</span>
-<span class="nc" id="L59">        return taches;</span>
+<span class="nc" id="L56">        });</span>
+<span class="nc" id="L57">        tacheRepository.saveAll(taches);</span>
+<span class="nc" id="L58">        return taches;</span>
     }
 
     @Override
     public HashMap&lt;String, Float&gt; calculNouveauMontantInscriptionDesEtudiants() {
-<span class="nc" id="L64">        HashMap&lt;String, Float&gt; nouveauxMontantsInscription = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L65">        etudiantRepository.findAll().forEach(etudiant -&gt; {</span>
-<span class="nc" id="L66">            Float ancienMontant= etudiant.getMontantInscription();</span>
-<span class="nc" id="L67">            LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1,1);</span>
-<span class="nc" id="L68">            LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), 12,31);</span>
-<span class="nc" id="L69">            Float montantTachesAssignesAnneeEnCours = tacheRepository.</span>
-<span class="nc" id="L70">                    sommeTacheAnneeEncours(startDate,endDate,etudiant.getIdEtudiant());</span>
-<span class="nc" id="L71">            Float nouveauMontant = ancienMontant;</span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">            if (montantTachesAssignesAnneeEnCours!=null) {</span>
-<span class="nc" id="L73">                 nouveauMontant = ancienMontant - montantTachesAssignesAnneeEnCours;</span>
+<span class="nc" id="L63">        HashMap&lt;String, Float&gt; nouveauxMontantsInscription = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L64">        etudiantRepository.findAll().forEach(etudiant -&gt; {</span>
+<span class="nc" id="L65">            Float ancienMontant= etudiant.getMontantInscription();</span>
+<span class="nc" id="L66">            LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1,1);</span>
+<span class="nc" id="L67">            LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), 12,31);</span>
+<span class="nc" id="L68">            Float montantTachesAssignesAnneeEnCours = tacheRepository.</span>
+<span class="nc" id="L69">                    sommeTacheAnneeEncours(startDate,endDate,etudiant.getIdEtudiant());</span>
+<span class="nc" id="L70">            Float nouveauMontant = ancienMontant;</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            if (montantTachesAssignesAnneeEnCours!=null) {</span>
+<span class="nc" id="L72">                 nouveauMontant = ancienMontant - montantTachesAssignesAnneeEnCours;</span>
             }
-<span class="nc" id="L75">            nouveauxMontantsInscription.put(etudiant.getNomEt()+&quot; &quot;+etudiant.getPrenomEt(),</span>
+<span class="nc" id="L74">            nouveauxMontantsInscription.put(etudiant.getNomEt()+&quot; &quot;+etudiant.getPrenomEt(),</span>
                     nouveauMontant);
-<span class="nc" id="L77">        });</span>
-<span class="nc" id="L78">        return nouveauxMontantsInscription;</span>
+<span class="nc" id="L76">        });</span>
+<span class="nc" id="L77">        return nouveauxMontantsInscription;</span>
     }
 
     //@Scheduled(cron = &quot;0 30 14 09 09 *&quot;)
     public void updateNouveauMontantInscriptionDesEtudiants() {
-<span class="nc" id="L83">        etudiantRepository.findAll().forEach(etudiant -&gt; {</span>
-<span class="nc" id="L84">            Float montantInscription= etudiant.getMontantInscription();</span>
-<span class="nc" id="L85">            LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1,1);</span>
-<span class="nc" id="L86">            LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), 12,31);</span>
-<span class="nc" id="L87">            Float montantTachesAssignesAnneeEnCours = tacheRepository.sommeTacheAnneeEncours(startDate,endDate,etudiant.getIdEtudiant());</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">            if (montantTachesAssignesAnneeEnCours!=null) {</span>
-<span class="nc" id="L89">                montantInscription = montantInscription - montantTachesAssignesAnneeEnCours;</span>
-<span class="nc" id="L90">                etudiant.setMontantInscription(montantInscription);</span>
-<span class="nc" id="L91">                etudiantRepository.save(etudiant);</span>
+<span class="nc" id="L82">        etudiantRepository.findAll().forEach(etudiant -&gt; {</span>
+<span class="nc" id="L83">            Float montantInscription= etudiant.getMontantInscription();</span>
+<span class="nc" id="L84">            LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1,1);</span>
+<span class="nc" id="L85">            LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), 12,31);</span>
+<span class="nc" id="L86">            Float montantTachesAssignesAnneeEnCours = tacheRepository.sommeTacheAnneeEncours(startDate,endDate,etudiant.getIdEtudiant());</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">            if (montantTachesAssignesAnneeEnCours!=null) {</span>
+<span class="nc" id="L88">                montantInscription = montantInscription - montantTachesAssignesAnneeEnCours;</span>
+<span class="nc" id="L89">                etudiant.setMontantInscription(montantInscription);</span>
+<span class="nc" id="L90">                etudiantRepository.save(etudiant);</span>
             }
 
-<span class="nc" id="L94">        });</span>
-<span class="nc" id="L95">    }</span>
+<span class="nc" id="L93">        });</span>
+<span class="nc" id="L94">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

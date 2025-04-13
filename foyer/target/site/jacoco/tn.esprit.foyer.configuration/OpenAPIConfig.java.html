@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-<span class="nc" id="L12">public class OpenAPIConfig {</span>
+<span class="fc" id="L12">public class OpenAPIConfig {</span>
     @Bean
     public OpenAPI openApiInformation() {
-<span class="nc" id="L15">        Contact contact = new Contact().email(&quot;springdoc@gmail.com&quot;).name(&quot;ghassen hammouda&quot;);</span>
-<span class="nc" id="L16">        Info info = new Info().contact(contact).description(&quot;Spring Boot Foyer Project&quot;)</span>
-<span class="nc" id="L17">                .summary(&quot;Manage Application with web services for ASI II Course&quot;)</span>
-<span class="nc" id="L18">                .title(&quot;Study Case Foyer&quot;).version(&quot;1.0.0&quot;)</span>
-<span class="nc" id="L19">                .license(new License().name(&quot;Apache 2.0&quot;).url(&quot;http://springdoc.org&quot;));</span>
-<span class="nc" id="L20">        return new OpenAPI().info(info);</span>
+<span class="fc" id="L15">        Contact contact = new Contact().email(&quot;springdoc@gmail.com&quot;).name(&quot;ghassen hammouda&quot;);</span>
+<span class="fc" id="L16">        Info info = new Info().contact(contact).description(&quot;Spring Boot Foyer Project&quot;)</span>
+<span class="fc" id="L17">                .summary(&quot;Manage Application with web services for ASI II Course&quot;)</span>
+<span class="fc" id="L18">                .title(&quot;Study Case Foyer&quot;).version(&quot;1.0.0&quot;)</span>
+<span class="fc" id="L19">                .license(new License().name(&quot;Apache 2.0&quot;).url(&quot;http://springdoc.org&quot;));</span>
+<span class="fc" id="L20">        return new OpenAPI().info(info);</span>
     }
 }
 

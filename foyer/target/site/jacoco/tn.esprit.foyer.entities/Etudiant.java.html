@@ -9,53 +9,42 @@ import java.util.List;
 
 @Entity
 @Getter
-<span class="nc bnc" id="L12" title="All 4 branches missed.">@Setter</span>
-<span class="nc" id="L13">@NoArgsConstructor</span>
-<span class="nc bnc" id="L14" title="All 4 branches missed.">@AllArgsConstructor</span>
+<span class="nc bnc" id="L12" title="All 12 branches missed.">@Setter</span>
+<span class="fc" id="L13">@NoArgsConstructor</span>
+<span class="nc bnc" id="L14" title="All 12 branches missed.">@AllArgsConstructor</span>
 <span class="nc" id="L15">@ToString</span>
-<span class="nc bnc" id="L16" title="All 4 branches missed.">@RequiredArgsConstructor</span>
+<span class="nc bnc" id="L16" title="All 12 branches missed.">@RequiredArgsConstructor</span>
 public class Etudiant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 <span class="nc" id="L20">    private Long idEtudiant; // Clé primaire</span>
+
     @NonNull
-<span class="nc" id="L22">    private String nomEt;</span>
+<span class="nc" id="L23">    private String nomEt;</span>
+
     @NonNull
-<span class="nc" id="L24">     String prenomEt;</span>
-<span class="nc" id="L25">     Long cin;</span>
-<span class="nc" id="L26">     String ecole;</span>
-<span class="nc" id="L27">     LocalDate dateNaissance;</span>
+<span class="nc" id="L26">    private String prenomEt;</span>
 
+    @NonNull
+<span class="nc" id="L29">    private Long cin;</span>
 
+    @NonNull
+<span class="nc" id="L32">    private String ecole;</span>
 
+    @NonNull
+<span class="nc" id="L35">    private LocalDate dateNaissance;</span>
 
+<span class="pc" id="L37">    private float montantInscription = 500;</span>
 
-
-
-
-
+    @NonNull
+    @Enumerated(EnumType.STRING)
+<span class="nc" id="L41">    private TypeEtudiant typeEtudiant;</span>
 
     @OneToMany(mappedBy = &quot;etudiant&quot;)
-<span class="nc" id="L39">    List&lt;Tache&gt; taches;</span>
-<span class="nc" id="L40">    Float montantInscription;</span>
-    @Enumerated(EnumType.STRING)
-<span class="nc" id="L42">    TypeEtudiant typeEtudiant;</span>
+<span class="nc" id="L44">    private List&lt;Tache&gt; taches;</span>
 
     @ManyToMany(mappedBy = &quot;etudiants&quot;,fetch = FetchType.EAGER)
-<span class="nc" id="L45">    List&lt;Reservation&gt; reservations;</span>
-
-    @OneToOne
-<span class="nc" id="L48">    Tache tache;</span>
-<span class="nc" id="L49">    public Etudiant(String nomEt, String prenomEt, String ecole) {</span>
-<span class="nc" id="L50">        this.nomEt = nomEt;</span>
-<span class="nc" id="L51">        this.prenomEt = prenomEt;</span>
-<span class="nc" id="L52">        this.ecole = ecole;</span>
-<span class="nc" id="L53">    }</span>
-
-
-
-
-
+<span class="nc" id="L47">    List&lt;Reservation&gt; reservations;</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

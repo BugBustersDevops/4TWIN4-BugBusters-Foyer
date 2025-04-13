@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-<span class="nc" id="L11">@Slf4j</span>
-<span class="nc" id="L12">public class LoggingAspect {</span>
+<span class="fc" id="L11">@Slf4j</span>
+<span class="fc" id="L12">public class LoggingAspect {</span>
 
 
     @Before(&quot;execution( * tn.esprit.foyer.services.*.*(..))&quot;)
     public void logMethodEntry(JoinPoint joinPoint) {
-<span class="nc" id="L17">        String name = joinPoint.getSignature().getName();</span>
-<span class="nc" id="L18">        log.info(&quot;In method : &quot; + name + &quot; : &quot;);</span>
-<span class="nc" id="L19">    }</span>
+<span class="fc" id="L17">        String name = joinPoint.getSignature().getName();</span>
+<span class="fc" id="L18">        log.info(&quot;In method : &quot; + name + &quot; : &quot;);</span>
+<span class="fc" id="L19">    }</span>
 
     @AfterReturning(&quot;execution( * tn.esprit.foyer.services.EtudiantServiceImpl.retrieveEtudiant(..))&quot;)
     public void logMethodExit1(JoinPoint joinPoint) {
@@ -32,9 +32,9 @@ import org.springframework.stereotype.Component;
 
     @After(&quot;execution(* tn.esprit.foyer.services.*.*(..))&quot;)
     public void logMethodExit(JoinPoint joinPoint) {
-<span class="nc" id="L35">        String name = joinPoint.getSignature().getName();</span>
-<span class="nc" id="L36">        log.info(&quot;Out of method : &quot; + name );</span>
-<span class="nc" id="L37">    }</span>
+<span class="fc" id="L35">        String name = joinPoint.getSignature().getName();</span>
+<span class="fc" id="L36">        log.info(&quot;Out of method : &quot; + name );</span>
+<span class="fc" id="L37">    }</span>
 
 }
 
