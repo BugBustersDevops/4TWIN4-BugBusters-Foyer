@@ -7,6 +7,7 @@ services:
     image: mysql:8
     container_name: mysql
     environment:
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: foyer
     volumes:
       - mysql_data:/var/lib/mysql
@@ -47,7 +48,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foyer?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ''
+      SPRING_DATASOURCE_PASSWORD: root
     
 volumes:
   mysql_data:
