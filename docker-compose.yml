@@ -20,26 +20,23 @@ services:
       - "8081:8081"
     volumes:
       - nexus-data:/nexus-data
-    # IMPORTANT: Do NOT delete volumes with `docker compose down -v` or data will reset
-
+      
   sonarqube:
     restart: always
     image: sonarqube:latest
     ports:
       - "9000:9000"
+    depends_on:
+      - mysql
     environment:
       - SONARQUBE_JDBC_URL=jdbc:mysql://mysql:3306/sonar
       - SONARQUBE_JDBC_USERNAME=sonar
       - SONARQUBE_JDBC_PASSWORD=sonar
       - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
-    depends_on:
-      - mysql
     volumes:
       - sonar-data:/opt/sonarqube/data
       - sonar-logs:/opt/sonarqube/logs
       - sonar-extensions:/opt/sonarqube/extensions
-    # TIP: First time, retrieve admin password using:
-    # docker exec -it sonarqube cat /opt/sonarqube/data/admin/.adminPassword
 
   springboot:
     restart: always
@@ -53,9 +50,35 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
 
+  prometheus:
+    restart: always
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    restart: always
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+  node-exporter:
+    image: prom/node-exporter
+    container_name: node-exporter
+    restart: always
+    ports:
+      - "9100:9100"
+
 volumes:
   mysql_data:
   nexus-data:
   sonar-data:
   sonar-logs:
   sonar-extensions:
+  grafana-storage:

@@ -53,7 +53,7 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- grafana + prometheus -->
+		grafana + prometheus
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
