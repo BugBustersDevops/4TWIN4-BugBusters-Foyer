@@ -5,7 +5,6 @@ services:
   mysql:
     restart: always
     image: mysql:8
-    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: foyer
@@ -21,6 +20,7 @@ services:
       - "8081:8081"
     volumes:
       - nexus-data:/nexus-data
+    # IMPORTANT: Do NOT delete volumes with `docker compose down -v` or data will reset
 
   sonarqube:
     restart: always
@@ -32,15 +32,18 @@ services:
       - SONARQUBE_JDBC_USERNAME=sonar
       - SONARQUBE_JDBC_PASSWORD=sonar
       - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    depends_on:
+      - mysql
     volumes:
       - sonar-data:/opt/sonarqube/data
       - sonar-logs:/opt/sonarqube/logs
       - sonar-extensions:/opt/sonarqube/extensions
+    # TIP: First time, retrieve admin password using:
+    # docker exec -it sonarqube cat /opt/sonarqube/data/admin/.adminPassword
 
   springboot:
     restart: always
     image: naceradhoum/naceradhoum-bugbusters-4twin4-foyer
-    container_name: springboot
     depends_on:
       - mysql
     ports:
@@ -49,7 +52,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foyer?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-    
+
 volumes:
   mysql_data:
   nexus-data:
