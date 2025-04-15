@@ -1,5 +1,6 @@
 package tn.esprit.foyer.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,8 @@ public class UniversiteServiceImpl implements IUniversiteService{
     @Override
     public Long desaffecterFoyerAUniversite(long idFoyer) {
         // t1 = recuperer le temps (date sys)
-        Foyer f = foyerRepository.findById(idFoyer).get();
+        Foyer f = foyerRepository.findById(idFoyer)
+                .orElseThrow(() -> new EntityNotFoundException("Foyer not found with id: " + idFoyer));
         f.setUniversite(null);
         //
         foyerRepository.save(f);

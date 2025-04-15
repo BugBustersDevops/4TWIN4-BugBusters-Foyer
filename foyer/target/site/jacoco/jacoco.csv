@@ -26,7 +26,7 @@ foyer,tn.esprit.foyer.entities,Foyer.FoyerBuilder,54,0,0,0,1,0,8,0,8,0
 foyer,tn.esprit.foyer.entities,Reservation.ReservationBuilder,45,0,0,0,1,0,7,0,7,0
 foyer,tn.esprit.foyer.services,ChambreServiceImpl,213,0,16,0,38,0,25,0,17,0
 foyer,tn.esprit.foyer.services,BlocServiceImpl,139,0,2,0,33,0,15,0,14,0
-foyer,tn.esprit.foyer.services,UniversiteServiceImpl,93,0,0,0,20,0,9,0,9,0
+foyer,tn.esprit.foyer.services,UniversiteServiceImpl,101,0,0,0,21,0,10,0,10,0
 foyer,tn.esprit.foyer.services,TacheServiceImpl,76,90,3,1,17,21,9,6,7,6
 foyer,tn.esprit.foyer.services,EtudiantServiceImpl,119,0,4,0,27,0,11,0,9,0
 foyer,tn.esprit.foyer.services,FoyerServiceImpl,65,0,0,0,14,0,9,0,9,0
