@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FoyerRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">foyer</a> &gt; <a href="index.source.html" class="el_package">tn.esprit.foyer.controllers</a> &gt; <span class="el_source">FoyerRestController.java</span></div><h1>FoyerRestController.java</h1><pre class="source lang-java linenums">package tn.esprit.foyer.controllers;
+
+
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import tn.esprit.foyer.entities.Foyer;
+import tn.esprit.foyer.services.IFoyerService;
+import java.util.List;
+@RestController
+<span class="nc" id="L10">@AllArgsConstructor</span>
+@RequestMapping(&quot;/foyer&quot;)
+
+public class FoyerRestController {
+
+    IFoyerService foyerService;
+    // http://localhost:8089/foyer/foyer/retrieve-all-foyers
+    @GetMapping(&quot;/retrieve-all-foyers&quot;)
+    @ResponseBody
+    public List&lt;Foyer&gt; getFoyers() {
+<span class="nc" id="L20">        List&lt;Foyer&gt; listFoyers = foyerService.retrieveAllFoyers();</span>
+<span class="nc" id="L21">        return listFoyers;</span>
+    }
+
+    // http://localhost:8089/foyer/foyer/retrieve-foyer/8
+    @GetMapping(&quot;/retrieve-foyer/{foyerId}&quot;)
+    @ResponseBody
+    public Foyer retrieveFoyer(@PathVariable(&quot;foyerId&quot;) Long foyerId) {
+<span class="nc" id="L28">        return foyerService.retrieveFoyer(foyerId);</span>
+    }
+
+    // http://localhost:8089/foyer/foyer/add-foyer
+    @PostMapping(&quot;/add-foyer&quot;)
+    @ResponseBody
+    public Foyer addFoyer(@RequestBody Foyer f) {
+<span class="nc" id="L35">        Foyer foyer= foyerService.addFoyer(f);</span>
+<span class="nc" id="L36">        return foyer;</span>
+    }
+
+    // http://localhost:8089/foyer/foyer/add-foyer-with-bloc
+    @PostMapping(&quot;/add-foyer-with-bloc&quot;)
+    @ResponseBody
+    public Foyer addFoyerWithBloc(@RequestBody Foyer f) {
+<span class="nc" id="L43">        Foyer foyer= foyerService.addFoyerWithBloc(f);</span>
+<span class="nc" id="L44">        return foyer;</span>
+    }
+
+    // http://localhost:8089/foyer/foyer/update-foyer
+    @PutMapping(&quot;/update-foyer&quot;)
+    @ResponseBody
+    public Foyer updateFoyer(@RequestBody Foyer f) {
+<span class="nc" id="L51">        Foyer foyer= foyerService.updateFoyer(f);</span>
+<span class="nc" id="L52">        return foyer;</span>
+    }
+    // http://localhost:8089/foyer/foyer/removeFoyer
+    @DeleteMapping(&quot;/removeFoyer/{idFoyer}&quot;)
+    @ResponseBody
+    public void removeFoyer(@PathVariable(&quot;idFoyer&quot;) Long idFoyer) {
+<span class="nc" id="L58">        foyerService.removeFoyer(idFoyer);</span>
+<span class="nc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

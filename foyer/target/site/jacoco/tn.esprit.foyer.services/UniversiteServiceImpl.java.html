@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UniversiteServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">foyer</a> &gt; <a href="index.source.html" class="el_package">tn.esprit.foyer.services</a> &gt; <span class="el_source">UniversiteServiceImpl.java</span></div><h1>UniversiteServiceImpl.java</h1><pre class="source lang-java linenums">package tn.esprit.foyer.services;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import tn.esprit.foyer.entities.Foyer;
+import tn.esprit.foyer.entities.Universite;
+import tn.esprit.foyer.repository.FoyerRepository;
+import tn.esprit.foyer.repository.UniversiteRepository;
+import java.util.List;
+
+@Service
+<span class="nc" id="L13">@AllArgsConstructor</span>
+<span class="nc" id="L14">@Slf4j</span>
+public class UniversiteServiceImpl implements IUniversiteService{
+    UniversiteRepository universiteRepository;
+    FoyerRepository foyerRepository;
+    @Override
+    public List&lt;Universite&gt; retrieveAllUniversites() {
+<span class="nc" id="L20">        log.info(&quot;debut methode retrieveAllUniversites&quot;);</span>
+<span class="nc" id="L21">        return universiteRepository.findAll();</span>
+    }
+
+    @Override
+    public Universite addUniversite(Universite u) {
+<span class="nc" id="L26">        return universiteRepository.save(u);</span>
+    }
+
+    @Override
+    public Universite updateUniversite(Universite u) {
+
+<span class="nc" id="L32">        log.info(&quot;debut methode updateUniversite&quot;);</span>
+<span class="nc" id="L33">        return universiteRepository.save(u);</span>
+    }
+
+    @Override
+    public Universite retrieveUniversite(Long idUniversite) {
+<span class="nc" id="L38">        return universiteRepository.findById(idUniversite).orElse(null);</span>
+    }
+
+    @Override
+    public void removeUniversite(Long idUniversite) {
+<span class="nc" id="L43">        universiteRepository.deleteById(idUniversite);</span>
+<span class="nc" id="L44">    }</span>
+
+    @Override
+    public Universite affecterFoyerAUniversite(long idFoyer, String nomUniversite) {
+        // récupérer les objets à partir des primitifs
+<span class="nc" id="L49">        Foyer f = foyerRepository.findById(idFoyer).get();</span>
+<span class="nc" id="L50">        Universite universite = universiteRepository.findByNomUniversite(nomUniversite);</span>
+       // identifier le parent du child
+        // parent.setChild()
+<span class="nc" id="L53">        f.setUniversite(universite);</span>
+        // sauvegarde l'objet modifié
+<span class="nc" id="L55">        foyerRepository.save(f);</span>
+<span class="nc" id="L56">        log.info(&quot;fin methode affecterFoyerAUniversite&quot;);</span>
+<span class="nc" id="L57">        return universite;</span>
+    }
+
+    @Override
+    public Long desaffecterFoyerAUniversite(long idFoyer) {
+        // t1 = recuperer le temps (date sys)
+<span class="nc" id="L63">        Foyer f = foyerRepository.findById(idFoyer).get();</span>
+<span class="nc" id="L64">        f.setUniversite(null);</span>
+        //
+<span class="nc" id="L66">        foyerRepository.save(f);</span>
+        // t2 = recuperer le temps (date sys)
+        // te= t2-t1
+
+<span class="nc" id="L70">        return f.getIdFoyer();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
