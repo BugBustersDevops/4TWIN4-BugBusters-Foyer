@@ -32,7 +32,7 @@ services:
       - "8089:8089"
     networks:
       - app-network
-    image: foyer-devops:latest
+    image: achref140/achref_limam-4twin4-bugbusters-foyer:latest
 
 volumes:
   db_data:
