@@ -3,31 +3,35 @@ version: '3.8'
 services:
 
   mysql:
-    restart: always
     image: mysql:8
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: foyer
-    volumes:
-      - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
-
-  nexus:
-    restart: always
-    image: sonatype/nexus3
-    ports:
-      - "8081:8081"
     volumes:
-      - nexus-data:/nexus-data
-      
-  sonarqube:
+      - mysql_data:/var/lib/mysql
+
+  springboot:
+    image: naceradhoum/naceradhoum-bugbusters-4twin4-foyer
     restart: always
-    image: sonarqube:latest
-    ports:
-      - "9000:9000"
     depends_on:
       - mysql
+    ports:
+      - "8089:8089"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foyer?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+  sonarqube:
+    image: sonarqube:latest
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "9000:9000"
     environment:
       - SONARQUBE_JDBC_URL=jdbc:mysql://mysql:3306/sonar
       - SONARQUBE_JDBC_USERNAME=sonar
@@ -37,43 +41,44 @@ services:
       - sonar-data:/opt/sonarqube/data
       - sonar-logs:/opt/sonarqube/logs
       - sonar-extensions:/opt/sonarqube/extensions
+    profiles: ["ci"]
 
-  springboot:
+  nexus:
+    image: sonatype/nexus3
     restart: always
-    image: naceradhoum/naceradhoum-bugbusters-4twin4-foyer
-    depends_on:
-      - mysql
     ports:
-      - "8089:8089"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/foyer?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      - "8081:8081"
+    volumes:
+      - nexus-data:/nexus-data
+    profiles: ["ci"]
 
   prometheus:
-    restart: always
     image: prom/prometheus
+    restart: always
     container_name: prometheus
     ports:
       - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    profiles: ["monitoring"]
 
   grafana:
-    restart: always
     image: grafana/grafana
+    restart: always
     container_name: grafana
     ports:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+    profiles: ["monitoring"]
 
   node-exporter:
     image: prom/node-exporter
-    container_name: node-exporter
     restart: always
+    container_name: node-exporter
     ports:
       - "9100:9100"
+    profiles: ["monitoring"]
 
 volumes:
   mysql_data:
