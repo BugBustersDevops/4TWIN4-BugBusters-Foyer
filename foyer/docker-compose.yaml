@@ -8,7 +8,6 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: foyer
     restart: always
-
     ports:
       - "3306:3306"
     volumes:
@@ -34,8 +33,33 @@ services:
       - app-network
     image: achref140/achref_limam-4twin4-bugbusters-foyer:latest
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+    networks:
+      - app-network
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - app-network
+    restart: always
+
 volumes:
   db_data:
+  grafana_data:
 
 networks:
   app-network:
