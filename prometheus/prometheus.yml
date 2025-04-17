@@ -10,7 +10,7 @@ scrape_configs:
   - job_name: 'jenkins'
     metrics_path: '/prometheus'
     static_configs:
-      - targets: ['host.docker.internal:8080']
+      - targets: ['172.27.153.197:8080']
 
   - job_name: 'node'
     static_configs:
