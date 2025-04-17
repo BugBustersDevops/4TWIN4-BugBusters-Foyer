@@ -41,7 +41,6 @@ services:
       - sonar-data:/opt/sonarqube/data
       - sonar-logs:/opt/sonarqube/logs
       - sonar-extensions:/opt/sonarqube/extensions
-    profiles: ["ci"]
 
   nexus:
     image: sonatype/nexus3
@@ -50,7 +49,6 @@ services:
       - "8081:8081"
     volumes:
       - nexus-data:/nexus-data
-    profiles: ["ci"]
 
   prometheus:
     image: prom/prometheus
@@ -60,7 +58,6 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    profiles: ["monitoring"]
 
   grafana:
     image: grafana/grafana
@@ -70,7 +67,6 @@ services:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
-    profiles: ["monitoring"]
 
   node-exporter:
     image: prom/node-exporter
@@ -78,7 +74,6 @@ services:
     container_name: node-exporter
     ports:
       - "9100:9100"
-    profiles: ["monitoring"]
 
 volumes:
   mysql_data:
