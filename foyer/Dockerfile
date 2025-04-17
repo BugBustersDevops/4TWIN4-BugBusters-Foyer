@@ -1,6 +1,11 @@
-FROM maven:3.8.4-openjdk-17
-WORKDIR /foyer
-EXPOSE 8089
-ADD target/4TWIN4-BugBusters-Foyer.jar foyer-3.0.0.jar
-ENTRYPOINT ["java","-jar","/foyer-3.0.0.jar"]
+FROM maven:3.9.5-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/4TWIN4-BugBusters-Foyer.jar .
+EXPOSE 8089
+CMD ["java", "-jar", "4TWIN4-BugBusters-Foyer.jar"]
