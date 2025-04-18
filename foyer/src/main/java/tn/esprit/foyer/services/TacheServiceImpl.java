@@ -50,7 +50,6 @@ public class TacheServiceImpl implements ITacheService{
         tacheRepository.deleteById(idTache);
     }
 
-    @Autowired
     private JavaMailSender emailSender;
 
 

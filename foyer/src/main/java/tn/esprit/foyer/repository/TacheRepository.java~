@@ -1,12 +1,14 @@
 package tn.esprit.foyer.repository;
 
 
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tn.esprit.foyer.entities.Tache;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -18,5 +20,5 @@ public interface TacheRepository extends JpaRepository<Tache,Long> {
     Float sommeTacheAnneeEncours(@Param("t1") LocalDate t1,
                                  @Param("t2")LocalDate t2,
                                  @Param("idEtudiant")Long idEtudiant);
-    List<Tache> findByEtudiantIdEtudiant(Long idEtudiant)>
+    List<Tache> findByDeadLineBeforeAndIsCompleteFalse(LocalDateTime deadLine);
 }

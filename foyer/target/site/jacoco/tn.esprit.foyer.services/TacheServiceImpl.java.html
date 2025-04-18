@@ -50,99 +50,98 @@ public class TacheServiceImpl implements ITacheService{
 <span class="nc" id="L50">        tacheRepository.deleteById(idTache);</span>
 <span class="nc" id="L51">    }</span>
 
-    @Autowired
     private JavaMailSender emailSender;
 
 
 
     @Override
     public List&lt;Tache&gt; addTachesAndAffectToEtudiant(List&lt;Tache&gt; taches, Long cinEtudiant) {
-<span class="fc" id="L60">        Etudiant et = etudiantRepository.findByCin(cinEtudiant);</span>
-<span class="fc" id="L61">        taches.forEach(tache -&gt; {</span>
-<span class="fc" id="L62">            tache.setEtudiant(et);</span>
-<span class="fc" id="L63">        });</span>
-<span class="fc" id="L64">        tacheRepository.saveAll(taches);</span>
-<span class="fc" id="L65">        return taches;</span>
+<span class="fc" id="L59">        Etudiant et = etudiantRepository.findByCin(cinEtudiant);</span>
+<span class="fc" id="L60">        taches.forEach(tache -&gt; {</span>
+<span class="fc" id="L61">            tache.setEtudiant(et);</span>
+<span class="fc" id="L62">        });</span>
+<span class="fc" id="L63">        tacheRepository.saveAll(taches);</span>
+<span class="fc" id="L64">        return taches;</span>
     }
 
     @Override
     public HashMap&lt;String, Float&gt; calculNouveauMontantInscriptionDesEtudiants() {
-<span class="fc" id="L70">        HashMap&lt;String, Float&gt; nouveauxMontantsInscription = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L71">        etudiantRepository.findAll().forEach(etudiant -&gt; {</span>
-<span class="fc" id="L72">            Float ancienMontant= etudiant.getMontantInscription();</span>
-<span class="fc" id="L73">            LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1,1);</span>
-<span class="fc" id="L74">            LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), 12,31);</span>
-<span class="fc" id="L75">            Float montantTachesAssignesAnneeEnCours = tacheRepository.</span>
-<span class="fc" id="L76">                    sommeTacheAnneeEncours(startDate,endDate,etudiant.getIdEtudiant());</span>
-<span class="fc" id="L77">            Float nouveauMontant = ancienMontant;</span>
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">            if (montantTachesAssignesAnneeEnCours!=null) {</span>
-<span class="fc" id="L79">                 nouveauMontant = ancienMontant - montantTachesAssignesAnneeEnCours;</span>
+<span class="fc" id="L69">        HashMap&lt;String, Float&gt; nouveauxMontantsInscription = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L70">        etudiantRepository.findAll().forEach(etudiant -&gt; {</span>
+<span class="fc" id="L71">            Float ancienMontant= etudiant.getMontantInscription();</span>
+<span class="fc" id="L72">            LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1,1);</span>
+<span class="fc" id="L73">            LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), 12,31);</span>
+<span class="fc" id="L74">            Float montantTachesAssignesAnneeEnCours = tacheRepository.</span>
+<span class="fc" id="L75">                    sommeTacheAnneeEncours(startDate,endDate,etudiant.getIdEtudiant());</span>
+<span class="fc" id="L76">            Float nouveauMontant = ancienMontant;</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">            if (montantTachesAssignesAnneeEnCours!=null) {</span>
+<span class="fc" id="L78">                 nouveauMontant = ancienMontant - montantTachesAssignesAnneeEnCours;</span>
             }
-<span class="fc" id="L81">            nouveauxMontantsInscription.put(etudiant.getNomEt()+&quot; &quot;+etudiant.getPrenomEt(),</span>
+<span class="fc" id="L80">            nouveauxMontantsInscription.put(etudiant.getNomEt()+&quot; &quot;+etudiant.getPrenomEt(),</span>
                     nouveauMontant);
-<span class="fc" id="L83">        });</span>
-<span class="fc" id="L84">        return nouveauxMontantsInscription;</span>
+<span class="fc" id="L82">        });</span>
+<span class="fc" id="L83">        return nouveauxMontantsInscription;</span>
     }
 
     @Scheduled(cron = &quot;0 30 14 09 09 *&quot;)
     public void updateNouveauMontantInscriptionDesEtudiants() {
-<span class="nc" id="L89">        etudiantRepository.findAll().forEach(etudiant -&gt; {</span>
-<span class="nc" id="L90">            Float montantInscription= etudiant.getMontantInscription();</span>
-<span class="nc" id="L91">            LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1,1);</span>
-<span class="nc" id="L92">            LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), 12,31);</span>
-<span class="nc" id="L93">            Float montantTachesAssignesAnneeEnCours = tacheRepository.sommeTacheAnneeEncours(startDate,endDate,etudiant.getIdEtudiant());</span>
-<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (montantTachesAssignesAnneeEnCours!=null) {</span>
-<span class="nc" id="L95">                montantInscription = montantInscription - montantTachesAssignesAnneeEnCours;</span>
-<span class="nc" id="L96">                etudiant.setMontantInscription(montantInscription);</span>
-<span class="nc" id="L97">                etudiantRepository.save(etudiant);</span>
+<span class="nc" id="L88">        etudiantRepository.findAll().forEach(etudiant -&gt; {</span>
+<span class="nc" id="L89">            Float montantInscription= etudiant.getMontantInscription();</span>
+<span class="nc" id="L90">            LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1,1);</span>
+<span class="nc" id="L91">            LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), 12,31);</span>
+<span class="nc" id="L92">            Float montantTachesAssignesAnneeEnCours = tacheRepository.sommeTacheAnneeEncours(startDate,endDate,etudiant.getIdEtudiant());</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if (montantTachesAssignesAnneeEnCours!=null) {</span>
+<span class="nc" id="L94">                montantInscription = montantInscription - montantTachesAssignesAnneeEnCours;</span>
+<span class="nc" id="L95">                etudiant.setMontantInscription(montantInscription);</span>
+<span class="nc" id="L96">                etudiantRepository.save(etudiant);</span>
             }
 
-<span class="nc" id="L100">        });</span>
-<span class="nc" id="L101">    }</span>
+<span class="nc" id="L99">        });</span>
+<span class="nc" id="L100">    }</span>
 
     @Override
     public void swapTaches(Long idTacheA, Long idTacheB) {
-<span class="fc" id="L105">        Tache t1 = tacheRepository.findById(idTacheA)</span>
-<span class="pc" id="L106">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Task A not found&quot;));</span>
-<span class="fc" id="L107">        Tache t2 = tacheRepository.findById(idTacheB)</span>
-<span class="pc" id="L108">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Task B not found&quot;));</span>
+<span class="fc" id="L104">        Tache t1 = tacheRepository.findById(idTacheA)</span>
+<span class="pc" id="L105">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Task A not found&quot;));</span>
+<span class="fc" id="L106">        Tache t2 = tacheRepository.findById(idTacheB)</span>
+<span class="pc" id="L107">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Task B not found&quot;));</span>
 
         // Validate same calendar week and year
-<span class="fc" id="L111">        LocalDate d1 = t1.getDateTache();</span>
-<span class="fc" id="L112">        LocalDate d2 = t2.getDateTache();</span>
-<span class="fc" id="L113">        int week1 = d1.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);</span>
-<span class="fc" id="L114">        int week2 = d2.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);</span>
-<span class="pc bpc" id="L115" title="1 of 4 branches missed.">        if (week1 != week2 || d1.getYear() != d2.getYear()) {</span>
-<span class="fc" id="L116">            throw new IllegalArgumentException(&quot;Tasks must be in the same week to swap&quot;);</span>
+<span class="fc" id="L110">        LocalDate d1 = t1.getDateTache();</span>
+<span class="fc" id="L111">        LocalDate d2 = t2.getDateTache();</span>
+<span class="fc" id="L112">        int week1 = d1.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);</span>
+<span class="fc" id="L113">        int week2 = d2.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);</span>
+<span class="pc bpc" id="L114" title="1 of 4 branches missed.">        if (week1 != week2 || d1.getYear() != d2.getYear()) {</span>
+<span class="fc" id="L115">            throw new IllegalArgumentException(&quot;Tasks must be in the same week to swap&quot;);</span>
         }
 
         // Swap assigned students
-<span class="fc" id="L120">        var e1 = t1.getEtudiant();</span>
-<span class="fc" id="L121">        var e2 = t2.getEtudiant();</span>
-<span class="fc" id="L122">        t1.setEtudiant(e2);</span>
-<span class="fc" id="L123">        t2.setEtudiant(e1);</span>
+<span class="fc" id="L119">        var e1 = t1.getEtudiant();</span>
+<span class="fc" id="L120">        var e2 = t2.getEtudiant();</span>
+<span class="fc" id="L121">        t1.setEtudiant(e2);</span>
+<span class="fc" id="L122">        t2.setEtudiant(e1);</span>
 
         // Persist both changes in a batch
-<span class="fc" id="L126">        tacheRepository.saveAll(List.of(t1, t2));</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L125">        tacheRepository.saveAll(List.of(t1, t2));</span>
+<span class="fc" id="L126">    }</span>
 
     // Send notifications for overdue tasks
     @Scheduled(cron = &quot;0 0 9 * * ?&quot;)  // Check every day at 9 AM
     public void checkOverdueTasks() {
-<span class="nc" id="L132">        LocalDateTime now = LocalDateTime.now();</span>
-<span class="nc" id="L133">        List&lt;Tache&gt; overdueTasks = tacheRepository.findByDeadLineBeforeAndIsCompleteFalse(now);</span>
+<span class="nc" id="L131">        LocalDateTime now = LocalDateTime.now();</span>
+<span class="nc" id="L132">        List&lt;Tache&gt; overdueTasks = tacheRepository.findByDeadLineBeforeAndIsCompleteFalse(now);</span>
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">        for (Tache task : overdueTasks) {</span>
-<span class="nc" id="L136">            sendOverdueNotification(task);</span>
-<span class="nc" id="L137">        }</span>
-<span class="nc" id="L138">    }</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        for (Tache task : overdueTasks) {</span>
+<span class="nc" id="L135">            sendOverdueNotification(task);</span>
+<span class="nc" id="L136">        }</span>
+<span class="nc" id="L137">    }</span>
 
     private void sendOverdueNotification(Tache task) {
-<span class="nc" id="L141">        SimpleMailMessage message = new SimpleMailMessage();</span>
-<span class="nc" id="L142">        message.setTo(task.getEtudiant().getEmail());  // Send to the relevant user</span>
-<span class="nc" id="L143">        message.setSubject(&quot;Overdue Task Notification&quot;);</span>
-<span class="nc" id="L144">        message.setText(&quot;The task &quot; + task.getIdTache() + &quot; is overdue! Due date was: &quot; + task.getDeadLine());</span>
-<span class="nc" id="L145">        emailSender.send(message);</span>
-<span class="nc" id="L146">    }</span>
+<span class="nc" id="L140">        SimpleMailMessage message = new SimpleMailMessage();</span>
+<span class="nc" id="L141">        message.setTo(task.getEtudiant().getEmail());  // Send to the relevant user</span>
+<span class="nc" id="L142">        message.setSubject(&quot;Overdue Task Notification&quot;);</span>
+<span class="nc" id="L143">        message.setText(&quot;The task &quot; + task.getIdTache() + &quot; is overdue! Due date was: &quot; + task.getDeadLine());</span>
+<span class="nc" id="L144">        emailSender.send(message);</span>
+<span class="nc" id="L145">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
