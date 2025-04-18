@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,6 +22,8 @@ public class Tache implements Serializable {
     @NonNull
     private LocalDate dateTache;
 
+    private LocalDateTime deadLine;
+
     @NonNull
     Integer duree;
 
@@ -30,8 +33,11 @@ public class Tache implements Serializable {
     @Enumerated(EnumType.STRING)
     TypeTache typeTache;
 
+    Boolean isComplete = false;
+
     @ManyToOne
     @JsonIgnore
     Etudiant etudiant;
+
 }
 

@@ -9,11 +9,11 @@ import java.util.List;
 
 @Entity
 @Getter
-<span class="pc bpc" id="L12" title="10 of 14 branches missed.">@Setter</span>
+<span class="pc bpc" id="L12" title="12 of 16 branches missed.">@Setter</span>
 <span class="fc" id="L13">@NoArgsConstructor</span>
-<span class="nc bnc" id="L14" title="All 14 branches missed.">@AllArgsConstructor</span>
+<span class="nc bnc" id="L14" title="All 16 branches missed.">@AllArgsConstructor</span>
 <span class="nc" id="L15">@ToString</span>
-<span class="nc bnc" id="L16" title="All 14 branches missed.">@RequiredArgsConstructor</span>
+<span class="nc bnc" id="L16" title="All 16 branches missed.">@RequiredArgsConstructor</span>
 public class Etudiant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,23 +29,26 @@ public class Etudiant implements Serializable {
 <span class="nc" id="L29">    private Long cin;</span>
 
     @NonNull
-<span class="nc" id="L32">    private String ecole;</span>
+<span class="nc" id="L32">    private String email;</span>
 
     @NonNull
-<span class="nc" id="L35">    private LocalDate dateNaissance;</span>
+<span class="nc" id="L35">    private String ecole;</span>
 
     @NonNull
-<span class="fc" id="L38">    private Float montantInscription;</span>
+<span class="nc" id="L38">    private LocalDate dateNaissance;</span>
+
+    @NonNull
+<span class="fc" id="L41">    private Float montantInscription;</span>
 
     @NonNull
     @Enumerated(EnumType.STRING)
-<span class="nc" id="L42">    private TypeEtudiant typeEtudiant;</span>
+<span class="nc" id="L45">    private TypeEtudiant typeEtudiant;</span>
 
     @OneToMany(mappedBy = &quot;etudiant&quot;)
-<span class="nc" id="L45">    private List&lt;Tache&gt; taches;</span>
+<span class="nc" id="L48">    private List&lt;Tache&gt; taches;</span>
 
     @ManyToMany(mappedBy = &quot;etudiants&quot;,fetch = FetchType.EAGER)
-<span class="nc" id="L48">    List&lt;Reservation&gt; reservations;</span>
+<span class="nc" id="L51">    List&lt;Reservation&gt; reservations;</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

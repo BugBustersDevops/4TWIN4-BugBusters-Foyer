@@ -19,4 +19,14 @@ logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %-5level - %logger{60} - %msg%
 management.endpoints.web.exposure.include=*
 management.endpoint.prometheus.enabled=true
 management.prometheus.metrics.export.enabled=true
+management.endpoints.web.base-path=/actuator
+
+#mail
+spring.mail.host=smtp.gmail.com        # SMTP server (e.g., Gmail SMTP: smtp.gmail.com)
+spring.mail.port=587                     # SMTP port (587 for TLS, 465 for SSL, 25 for non-secure)
+spring.mail.username=naceradhoum8@gmail.com  # Your email address
+spring.mail.password=cuah hoij rdkc fzzx   # Your email password
+spring.mail.properties.mail.smtp.auth=true  # Enable SMTP Authentication
+spring.mail.properties.mail.smtp.starttls.enable=true  # Enable STARTTLS
+
 

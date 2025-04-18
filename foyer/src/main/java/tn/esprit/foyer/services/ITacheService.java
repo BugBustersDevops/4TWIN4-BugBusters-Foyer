@@ -20,4 +20,5 @@ public interface ITacheService {
 
     void updateNouveauMontantInscriptionDesEtudiants();
 
+    void swapTaches(Long idTacheA, Long idTacheB);
 }

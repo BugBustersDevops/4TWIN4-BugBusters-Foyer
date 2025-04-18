@@ -29,6 +29,9 @@ public class Etudiant implements Serializable {
     private Long cin;
 
     @NonNull
+    private String email;
+
+    @NonNull
     private String ecole;
 
     @NonNull

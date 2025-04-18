@@ -2,6 +2,9 @@ package tn.esprit.foyer.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import tn.esprit.foyer.entities.Etudiant;
@@ -10,6 +13,8 @@ import tn.esprit.foyer.repository.EtudiantRepository;
 import tn.esprit.foyer.repository.TacheRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.IsoFields;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,6 +50,8 @@ public class TacheServiceImpl implements ITacheService{
         tacheRepository.deleteById(idTache);
     }
 
+    @Autowired
+    private JavaMailSender emailSender;
 
 
 
@@ -77,7 +84,7 @@ public class TacheServiceImpl implements ITacheService{
         return nouveauxMontantsInscription;
     }
 
-    //@Scheduled(cron = "0 30 14 09 09 *")
+    @Scheduled(cron = "0 30 14 09 09 *")
     public void updateNouveauMontantInscriptionDesEtudiants() {
         etudiantRepository.findAll().forEach(etudiant -> {
             Float montantInscription= etudiant.getMontantInscription();
@@ -91,5 +98,50 @@ public class TacheServiceImpl implements ITacheService{
             }
 
         });
+    }
+
+    @Override
+    public void swapTaches(Long idTacheA, Long idTacheB) {
+        Tache t1 = tacheRepository.findById(idTacheA)
+                .orElseThrow(() -> new IllegalArgumentException("Task A not found"));
+        Tache t2 = tacheRepository.findById(idTacheB)
+                .orElseThrow(() -> new IllegalArgumentException("Task B not found"));
+
+        // Validate same calendar week and year
+        LocalDate d1 = t1.getDateTache();
+        LocalDate d2 = t2.getDateTache();
+        int week1 = d1.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+        int week2 = d2.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+        if (week1 != week2 || d1.getYear() != d2.getYear()) {
+            throw new IllegalArgumentException("Tasks must be in the same week to swap");
+        }
+
+        // Swap assigned students
+        var e1 = t1.getEtudiant();
+        var e2 = t2.getEtudiant();
+        t1.setEtudiant(e2);
+        t2.setEtudiant(e1);
+
+        // Persist both changes in a batch
+        tacheRepository.saveAll(List.of(t1, t2));
+    }
+
+    // Send notifications for overdue tasks
+    @Scheduled(cron = "0 0 9 * * ?")  // Check every day at 9 AM
+    public void checkOverdueTasks() {
+        LocalDateTime now = LocalDateTime.now();
+        List<Tache> overdueTasks = tacheRepository.findByDeadLineBeforeAndIsCompleteFalse(now);
+
+        for (Tache task : overdueTasks) {
+            sendOverdueNotification(task);
+        }
+    }
+
+    private void sendOverdueNotification(Tache task) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(task.getEtudiant().getEmail());  // Send to the relevant user
+        message.setSubject("Overdue Task Notification");
+        message.setText("The task " + task.getIdTache() + " is overdue! Due date was: " + task.getDeadLine());
+        emailSender.send(message);
     }
 }

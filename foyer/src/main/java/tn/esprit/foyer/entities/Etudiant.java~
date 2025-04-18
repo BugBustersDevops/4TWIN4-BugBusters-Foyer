@@ -34,7 +34,8 @@ public class Etudiant implements Serializable {
     @NonNull
     private LocalDate dateNaissance;
 
-    private float montantInscription = 500;
+    @NonNull
+    private Float montantInscription;
 
     @NonNull
     @Enumerated(EnumType.STRING)

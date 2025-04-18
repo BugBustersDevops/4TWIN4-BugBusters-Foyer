@@ -5,34 +5,40 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
-<span class="pc bnc" id="L11" title="All 6 branches missed.">@Setter</span>
-<span class="nc" id="L12">@NoArgsConstructor</span>
-<span class="nc bnc" id="L13" title="All 6 branches missed.">@AllArgsConstructor</span>
-<span class="nc" id="L14">@ToString</span>
-<span class="pc bpc" id="L15" title="3 of 6 branches missed.">@RequiredArgsConstructor</span>
+<span class="pc bnc" id="L12" title="All 6 branches missed.">@Setter</span>
+<span class="nc" id="L13">@NoArgsConstructor</span>
+<span class="nc bnc" id="L14" title="All 6 branches missed.">@AllArgsConstructor</span>
+<span class="nc" id="L15">@ToString</span>
+<span class="pc bpc" id="L16" title="3 of 6 branches missed.">@RequiredArgsConstructor</span>
 public class Tache implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-<span class="nc" id="L19">    private Long idTache;</span>
+<span class="nc" id="L20">    private Long idTache;</span>
 
     @NonNull
-<span class="nc" id="L22">    private LocalDate dateTache;</span>
+<span class="fc" id="L23">    private LocalDate dateTache;</span>
+
+<span class="nc" id="L25">    private LocalDateTime deadLine;</span>
 
     @NonNull
-<span class="nc" id="L25">    Integer duree;</span>
+<span class="nc" id="L28">    Integer duree;</span>
 
     @NonNull
-<span class="nc" id="L28">    Float tarifHoraire;</span>
+<span class="nc" id="L31">    Float tarifHoraire;</span>
 
     @Enumerated(EnumType.STRING)
-<span class="nc" id="L31">    TypeTache typeTache;</span>
+<span class="nc" id="L34">    TypeTache typeTache;</span>
+
+<span class="pc" id="L36">    Boolean isComplete = false;</span>
 
     @ManyToOne
     @JsonIgnore
-<span class="fc" id="L35">    Etudiant etudiant;</span>
+<span class="fc" id="L40">    Etudiant etudiant;</span>
+
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
