@@ -2,6 +2,7 @@
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.foyer.entities.Etudiant;
 import tn.esprit.foyer.entities.Tache;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-<span class="nc" id="L14">@AllArgsConstructor</span>
+<span class="nc" id="L15">@AllArgsConstructor</span>
 @RequestMapping(&quot;/tache&quot;)
 
 public class TacheRestController {
@@ -21,23 +22,23 @@ public class TacheRestController {
     @GetMapping(&quot;/retrieve-all-taches&quot;)
     @ResponseBody
     public List&lt;Tache&gt; getFoyers() {
-<span class="nc" id="L24">        List&lt;Tache&gt; listTaches = tacheService.retrieveAllTaches();</span>
-<span class="nc" id="L25">        return listTaches;</span>
+<span class="nc" id="L25">        List&lt;Tache&gt; listTaches = tacheService.retrieveAllTaches();</span>
+<span class="nc" id="L26">        return listTaches;</span>
     }
 
     // http://localhost:8089/foyer/tache/retrieve-tache/8
     @GetMapping(&quot;/retrieve-tache/{tacheId}&quot;)
     @ResponseBody
     public Tache retrieveTache(@PathVariable(&quot;tacheId&quot;) Long tacheId) {
-<span class="nc" id="L32">        return tacheService.retrieveTache(tacheId);</span>
+<span class="nc" id="L33">        return tacheService.retrieveTache(tacheId);</span>
     }
 
     // http://localhost:8089/foyer/tache/add-tache
     @PostMapping(&quot;/add-tache&quot;)
     @ResponseBody
     public Tache addTache(@RequestBody Tache t) {
-<span class="nc" id="L39">        Tache tache= tacheService.addTache(t);</span>
-<span class="nc" id="L40">        return tache;</span>
+<span class="nc" id="L40">        Tache tache= tacheService.addTache(t);</span>
+<span class="nc" id="L41">        return tache;</span>
     }
 
 
@@ -45,27 +46,40 @@ public class TacheRestController {
     @PutMapping(&quot;/update-tache&quot;)
     @ResponseBody
     public Tache updateTache(@RequestBody Tache t) {
-<span class="nc" id="L48">        Tache tache= tacheService.updateTache(t);</span>
-<span class="nc" id="L49">        return tache;</span>
+<span class="nc" id="L49">        Tache tache= tacheService.updateTache(t);</span>
+<span class="nc" id="L50">        return tache;</span>
     }
     // http://localhost:8089/foyer/tache/removeidTache
     @DeleteMapping(&quot;/removeTache/{idTache}&quot;)
     @ResponseBody
     public void removeTache(@PathVariable(&quot;idTache&quot;) Long idTache) {
-<span class="nc" id="L55">        tacheService.removeTache(idTache);</span>
-<span class="nc" id="L56">    }</span>
+<span class="nc" id="L56">        tacheService.removeTache(idTache);</span>
+<span class="nc" id="L57">    }</span>
 
     // http://localhost:8089/foyer/tache/addTachesAndAffectToEtudiant
     @PostMapping(&quot;/addTachesAndAffectToEtudiant/{cinEtudiant}&quot;)
     @ResponseBody
     public List&lt;Tache&gt; addTachesAndAffectToEtudiant(@RequestBody List&lt;Tache&gt; taches, @PathVariable(&quot;cinEtudiant&quot;) Long cinEtudiant) {
-<span class="nc" id="L62">        return tacheService.addTachesAndAffectToEtudiant(taches, cinEtudiant);</span>
+<span class="nc" id="L63">        return tacheService.addTachesAndAffectToEtudiant(taches, cinEtudiant);</span>
     }
 
     // http://localhost:8089/foyer/tache/calculNouveauMontantInscriptionDesEtudiants
     @GetMapping(&quot;/calculNouveauMontantInscriptionDesEtudiants&quot;)
     public HashMap&lt;String, Float&gt; calculNouveauMontantInscriptionDesEtudiants() {
-<span class="nc" id="L68">      return  tacheService.calculNouveauMontantInscriptionDesEtudiants();</span>
+<span class="nc" id="L69">      return  tacheService.calculNouveauMontantInscriptionDesEtudiants();</span>
     }
+
+    // http://localhost:8089/foyer/tache/swapTaches/1/2
+    @PutMapping(&quot;/swapTaches/{idTacheA}/{idTacheB}&quot;)
+    public ResponseEntity&lt;String&gt; swapTaches(@PathVariable Long idTacheA,
+                                             @PathVariable Long idTacheB) {
+        try {
+<span class="nc" id="L77">            tacheService.swapTaches(idTacheA, idTacheB);</span>
+<span class="nc" id="L78">            return ResponseEntity.ok(&quot;Tasks swapped successfully.&quot;);</span>
+<span class="nc" id="L79">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L80">            return ResponseEntity.badRequest().body(e.getMessage());</span>
+        }
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

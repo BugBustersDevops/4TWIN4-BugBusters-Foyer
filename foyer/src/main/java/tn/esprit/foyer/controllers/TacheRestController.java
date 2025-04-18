@@ -2,6 +2,7 @@ package tn.esprit.foyer.controllers;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.foyer.entities.Etudiant;
 import tn.esprit.foyer.entities.Tache;
@@ -67,4 +68,17 @@ public class TacheRestController {
     public HashMap<String, Float> calculNouveauMontantInscriptionDesEtudiants() {
       return  tacheService.calculNouveauMontantInscriptionDesEtudiants();
     }
+
+    // http://localhost:8089/foyer/tache/swapTaches/1/2
+    @PutMapping("/swapTaches/{idTacheA}/{idTacheB}")
+    public ResponseEntity<String> swapTaches(@PathVariable Long idTacheA,
+                                             @PathVariable Long idTacheB) {
+        try {
+            tacheService.swapTaches(idTacheA, idTacheB);
+            return ResponseEntity.ok("Tasks swapped successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
